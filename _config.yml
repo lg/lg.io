@@ -1,7 +1,7 @@
 # Site settings
 title: Larry Land
 email: trivex@gmail.com
-description: > Larry Gadea's random ramblings
+description: Larry Gadea's random ramblings
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://lg.io" # the base hostname & protocol for your site
 twitter_username: lg
