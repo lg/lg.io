@@ -83,3 +83,36 @@ There are two rules, `rule 1` which we have exposed the [Synology DiskStation Ma
 Reminder that `WAN_LOCAL` is for packets between the outside and destined for *the router* versus `WAN_IN` which is for packets destined for *the LAN*. Normally home-grade routers don't really distinguish these two apart, but for advanced configuration's sake, this is the case here.
 
 This firewall rule basically allows traffic that should be going to 192.168.0.1, the router's internal IP, to access port 22, the internal port for ssh.
+
+### DHCP static mappings
+
+It's always useful to have a couple machines on the network use DHCP, yet always get the same IP addresses assigned to them. Fortunately doing so is quite easy.
+
+    service {
+      dhcp-server {
+        [...]
+        hostfile-update enable
+        shared-network-name LAN {
+          [...]
+          authoritative enable
+          subnet 192.168.0.0/24 {
+            static-mapping driveway-camera {
+                ip-address 192.168.0.20
+                mac-address 00:02:d1:12:d3:e9
+            }
+            static-mapping synology {
+                ip-address 192.168.0.10
+                mac-address 00:11:32:41:1e:25
+            }
+          }
+        }
+      }
+    }
+
+It's mostly obvious what this does though the `hostfile-update enable` section is useful so you can access these mappings by name from the DNS server and other routing rules.
+
+### Port forwarding
+
+
+
+### Selective VPN routing
