@@ -111,8 +111,41 @@ It's always useful to have a couple machines on the network use DHCP, yet always
 
 It's mostly obvious what this does though the `hostfile-update enable` section is useful so you can access these mappings by name from the DNS server and other routing rules.
 
-### Port forwarding
+### Enable UPnP
 
+There are security problems with UPnP in general, but because of stuff like BitTorrent, World of Warcraft and many other applications, we need it to be easy to open ports for faster peer-to-peer. 
 
+    service {
+      upnp2 {
+        listen-on eth1
+        wan eth0
+      }
+    }
+
+We're using the `upnp2` to do this. It's the more up to date UPnP application in comparison to the legacy `upnp` that was available on the Vayatta system. `upnp2` is more compatible with the latest applications too.
+
+### Dynamic DNS Updates
+
+It's always useful to update a dynamic dns provider like DynDNS whenever your public IP changes. I personally own [lg.io](http://lg.io) and I want it to be updated. Unfortunately my hosting provider [iwantmyname](https://iwantmyname.com/) is not supported by the [built in dynamic-dns service](https://community.ubnt.com/t5/EdgeMAX-CLI-Basics-Knowledge/EdgeMAX-Dynamic-DNS-commands/ta-p/473905).
+
+Therefore, I created a task that runs nightly to update the dns on my domain.
+
+    task-scheduler {
+      task iwantmyname_update {
+          executable {
+              path /config/user-data/iwantmyname_update.sh
+          }
+          interval 1d
+      }
+    }
+
+Reminder that everything in the `/config` directory is saved across firmware upgrades, etc. So it's safe to put scripts and such in there. In this case the `/config/user-data/iwantmyname_update.sh` contains the following as per [iwantmyname's API](http://blog.iwantmyname.com/2012/03/ddns-dynamic-dns-service-on-your-own-domain.html): 
+
+    #!/bin/sh
+
+    # This is run by task-scheduler
+
+    /usr/bin/curl -u "trivex@gmail.com:MYAWESOMEPASSWORD" "https://iwantmyname.com/basicauth/ddns?hostname=xxx.lg.io"
 
 ### Selective VPN routing
+
