@@ -147,5 +147,39 @@ Reminder that everything in the `/config` directory is saved across firmware upg
 
     /usr/bin/curl -u "trivex@gmail.com:MYAWESOMEPASSWORD" "https://iwantmyname.com/basicauth/ddns?hostname=xxx.lg.io"
 
-### Selective VPN routing
+### Selective VPN routing (Policy-based Routing)
 
+So here's the fun part. The great part of an enterprise router is that it can do some pretty crazy things. What I like it for? Well, my parents want to use services like Netflix, Hulu, etc. But because of all sorts of anti-consumer business tactics on the publishers' parts, these services don't have a full catalogue available in Canada.
+
+Using the EdgeRouter, you can do things like route all traffic from one LAN client (like an Apple TV) to always go through a VPN (like an OpenVPN). Fancy! Lets do it.
+
+    interfaces {
+      [...]
+      openvpn vtun0 {
+        config-file /config/auth/pia/USEast.ovpn
+      }
+    }
+
+I use [Private Internet Access](https://www.privateinternetaccess.com/). They're kinda sketch in their branding, but they have a great product and have access to OpenVPN too, which I wanted. What sucks though -- OpenVPN is not hardware accelerated on the EdgeRouter. This sucks for throughput. We'll only be able to do about 7mbit/s. Fortunately that's sufficient for my parents' needs though. The EdgeRouter does support hardware accelerated IPSec, but there aren't any VPN providers out there that I know of that allow you to tunnel IPSec through them.
+
+Here's the config I use with PIA (in `/config/auth/pia/USEast.ovpn`):
+
+    client
+    dev vtun
+    proto udp
+    remote us-east.privateinternetaccess.com 1194
+    resolv-retry infinite
+    nobind
+    persist-key
+    persist-tun
+    ca /config/auth/pia/ca.crt
+    tls-client
+    remote-cert-tls server
+    auth-user-pass /config/auth/pia/pw.txt
+    comp-lzo
+    verb 1
+    reneg-sec 0
+    crl-verify /config/auth/pia/crl.pem
+    route-nopull
+
+The big deal is the `route-nopull` which makes it so that PIA doesnt set the default gateway and route *all* your traffic to the VPN. Normally you'd use a VPN provider on your computer to route everything, but in this case we only want selective routing. Which we'll set up next.
