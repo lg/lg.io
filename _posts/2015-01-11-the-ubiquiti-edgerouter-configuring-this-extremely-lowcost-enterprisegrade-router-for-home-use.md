@@ -14,7 +14,7 @@ For this article, we're going to configure it for home-use.
 
 ![EdgeRouter Lite](/assets/erlite.png)
 
-**A Challenger Appears!**
+**A Challenger Appears!** _and it's only $100!_
 
 ### Getting going
 
