@@ -6,7 +6,7 @@ tags: []
 published: True
 ---
 
-I've gotten a new, inexplicable, love for [Ubiquiti](http://unbt.com). They fit in my favorite category of companies: they make high quality products that cost nothing compared to the old-boys-club equivalents. Oh and these products look spectacular. I'm actually quite surprised how UBNT is able to do all the things they do... I couldn't support them more.
+I've gotten a new, inexplicable, love for [Ubiquiti](http://ubnt.com). They fit in my favorite category of companies: they make high quality products that cost nothing compared to the old-boys-club equivalents. Oh and these products look spectacular. I'm actually quite surprised how UBNT is able to do all the things they do... I couldn't support them more.
 
 After finding out about them from [MonkeyBrains](https://twitter.com/monkeybrainsnet), I looked through their product line to be quite surprised at the feature sets, yet still low cost. Being a huge fan of networking equipment, I decided to buy their cheapest router, the EdgeMAX EdgeRouter Lite. A 3 port, gigabit-capable router, that can really only be configured by commandline.
 
