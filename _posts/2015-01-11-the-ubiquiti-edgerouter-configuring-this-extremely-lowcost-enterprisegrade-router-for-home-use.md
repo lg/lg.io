@@ -133,7 +133,7 @@ Therefore, I created a task that runs nightly to update the dns on my domain.
     task-scheduler {
       task iwantmyname_update {
           executable {
-              path /config/user-data/iwantmyname_update.sh
+            path /config/user-data/iwantmyname_update.sh
           }
           interval 1d
       }
@@ -148,6 +148,21 @@ Reminder that everything in the `/config` directory is saved across firmware upg
     /usr/bin/curl -u "trivex@gmail.com:MYAWESOMEPASSWORD" "https://iwantmyname.com/basicauth/ddns?hostname=xxx.lg.io"
 
 **Note**: Firmware version 1.7 now introduces much more configuration for custom dynamic dns. This way you don't need to do it manually using the task scheduler.
+
+**Update Jan 17, 2015**: I've upgraded the router to the 1.7 alpha and have configured the router to do this in a much nicer way. Below is an example using the new `custom-` syntax:
+
+    dynamic {
+      interface eth0 {
+        service custom-oursfapt {
+          host-name oursfapt.workisboring.com
+          login AWESOMEUSERNAME
+          password AWESOMEPASSWORD
+          protocol noip
+        }
+      }
+     }
+
+In order to use a non-standard hostname (or service), you need to use the `custom-` prefix to the service name. Additionally, the protocol needs to be one that ddclient [supports](https://github.com/wimpunk/ddclient/blob/master/ddclient#L452).
 
 ### Selective VPN routing (Policy-based Routing)
 
