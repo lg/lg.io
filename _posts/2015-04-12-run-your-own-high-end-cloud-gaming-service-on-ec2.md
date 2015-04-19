@@ -34,15 +34,15 @@ This is all fun and games, but you need to make sure of two things:
 1. On AWS, create a new EC2 instance. Use these settings:
   - Base image should be `Microsoft Windows Server 2012 R2 Base` (since Windows still has all the best games)
   <br>![Windows Server 2012 R2](/assets/ec2win2012.png)
-  - Use a `g2.2xlarge` instance (to get an NVIDIA GRID K520 graphics card)
+  - Use a `g2.2xlarge` instance (to get an NVIDIA GRID K520 graphics card). **Updated Apr 19:** There is no point using any larger instances since all they do is just give you more GPUs you can't use.
   <br>![EC2 GPU class machine](/assets/ec2gpu.png)
   - Use a Spot instance, it's significantly cheaper (1/7th the regular cost) than regular instances
-  - For storage, I recommend at least 60GB (so you can install lots of fancy games)
+  - For storage, I recommend at least 100GB (**Updated Apr 19:** was 60GB) (so you can install lots of fancy games)
   - Also for storage if you're using spot instances, make sure your primary disk doesn't get deleted on termination
   - For the Security Group, i'd recommend just adding type `All traffic`
   - Finally, for the key pair, create a new one since you'll need one for Windows (to retrieve the password)
 
-1. Once your spot instance is assigned, use Microsoft Remote Desktop to connect to it (get it [here](https://itunes.apple.com/en/app/microsoft-remote-desktop/id715768417?mt=12) on a Mac). The username is `Administrator` and the password you'll need to [retrieve from the EC2 Console](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/IIS4.1GettingPassword.html). Once inside, make sure to install [TightVNC server](http://www.tightvnc.com/download.php) and use Screen Sharing (on a mac) to connect to the server. VNC is necessary so that the server uses the proper video card for rendering.
+1. Once your spot instance is assigned, use Microsoft Remote Desktop to connect to it (get it [here](https://itunes.apple.com/en/app/microsoft-remote-desktop/id715768417?mt=12) on a Mac). The username is `Administrator` and the password you'll need to [retrieve from the EC2 Console](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/IIS4.1GettingPassword.html). Once inside, make sure to install [TightVNC server](http://www.tightvnc.com/download.php) and use Screen Sharing (on a Mac, **Updated Apt 19:** or alternatively [Screens](http://edovia.com/screens/#mac) which has better clipboard handling) to connect to the server. VNC is necessary so that the server uses the proper video card for rendering.
 
 1. Install the [NVIDIA K520 drivers](http://www.nvidia.com/download/driverResults.aspx/74642/en-us) from the Nvidia website
 <br>![NVIDIA K520](/assets/nvidiak520.png)
@@ -52,8 +52,7 @@ This is all fun and games, but you need to make sure of two things:
 
 1. Start the Windows Audio Service as per the instructions [here](http://www.win2012workstation.com/enable-sound/). Also, since you're on EC2, those machines do not virtualize a sound card. So install [VB-Cable](http://vb-audio.pagesperso-orange.fr/Cable/index.htm) so you can get sound.
 
-1. Install the [Hamachi VPN service](https://secure.logmein.com/products/hamachi/) (it's free). It just makes it very easy to get your computer and the server on the same VPN without port forwarding or other crazy things. Steam In-Home streaming only works on the "local" network, so that's why this is necessary. You might be able to use the built-in VPN server in Windows too, but it's a huge hassle to set up properly.
-<br>![VPN all set up](/assets/vpn.png)
+1. **Updated Apr 19:** Install OpenVPN via the instructions [here](https://community.openvpn.net/openvpn/wiki/Easy_Windows_Guide). Make sure to use the TAP interface so Steam's multicast discovery gets forwarded. Here is my [server config](/assets/server.ovpn) and [client config](/assets/client.ovpn). I personally use [TunnelBlick](https://code.google.com/p/tunnelblick/) on my Mac as the client. You can alternatively use [Hamachi](https://secure.logmein.com/products/hamachi/) for both the server and client which is easier to set up, but I prefer to use non-commercial products. I was unable to get the built-in Windows VPN to work with multicast (if you could get it to work, email me please!)
 
 1. Install Steam and get yourself on the Beta channel (available in the preferences). Also, start downloading whatever games you'll want to stream. Oh and on your own Steam installation, make sure to turn on Hardware Decoding in the Steam settings, and I also recommend turning on Display Performance Information.
 <br>![Steam Settings](/assets/steamsettings.png)
@@ -85,11 +84,13 @@ See more information about this file in the [Steam In-Home Streaming](https://st
 
 ### Trouble?
 
-Two quick notes when having trouble.
+- If you have the VPN running and you can't get your client computer to see the server Steam, usually restarting Steam on the server will get the client to see it again. It's a bit of a pain since you'll need to VNC into the computer to restart things.
 
-First, if you have Hamachi running and you can't get your client computer to see the server Steam, usually restarting Steam on the server will get the client to see it again. It's a bit of a pain since you'll need to VNC into the computer to restart things.
+- If the game freezes, the way to get it out of it's broken state is to Microsoft Remote Desktop in, close things, then go back in via VNC to restore Steam, etc.
 
-Second, if the game freezes, the way to get it out of it's broken state is to Microsoft Remote Desktop in, close things, then go back in via VNC to restore Steam, etc.
+- **Updated Apr 19:** If your Steam client freezes after logging in, restart the Steam server.
+
+- **Updated Apr 19:** If you only see a black screen though you do hear sound, it usually means you need adjust the MTU of the VPN. See the [OpenVPN discussion](https://forums.openvpn.net/topic15640.html), or set it on Hamachi. Also, see the Steam [In-Home Streaming discussion](https://support.steampowered.com/kb_article.php?ref=3629-RIAV-1617#nvidialaptop) about this for more ideas.
 
 ### Summary
 
