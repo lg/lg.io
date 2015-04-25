@@ -18,15 +18,16 @@ You might have tried a service like the [now defunct OnLive](http://arstechnica.
 Playing games this way is actually quite economical -- especially when comparing to purchasing a full-on gaming rig. Here are the costs you'll need to consider:
 
 - GPU Instance runs about $0.11/hr (on a Spot instance, regularly around $0.70/hr)
-- Data transfer will around $0.09/GB, and at a sustained ~10mbit, itll cost you $0.41/hr (4.5GB/hr)
+- Data transfer will be around $0.09/GB, and at a sustained ~10mbit, itll cost you $0.41/hr (4.5GB/hr)
+- **Updated Apr 25:** Hard drive (EBS General Purpose SSD) storage of 100GB is $12.00/mo, or a bit under $0.02/hr
 
-This comes out to around $0.52/hr, not bad, for the cost of a $1000 gaming pc, you get ~1900 hours on much higher-end hardware!
+This comes out to around $0.54/hr (**Updated Apr 25**), not bad, for the cost of a $1000 gaming pc, you get ~1900 hours on much higher-end hardware!
 
 ### The catch?
 
 This is all fun and games, but you need to make sure of two things:
 
-1. You are within 20ms to the closest AWS datacenter (test [here](http://www.cloudping.info/)) and has GPU instances
+1. You are within 40ms to the closest AWS datacenter (test [here](http://www.cloudping.info/)) and has GPU instances (**Updated Apr 25** brought this up from 20ms, many people reporting it's just fine at slightly higher latencies)
 1. You have at least a 10mbit connection and it's unmetered
 
 ### Setting it up
