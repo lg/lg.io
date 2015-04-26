@@ -85,13 +85,17 @@ See more information about this file in the [Steam In-Home Streaming](https://st
 
 ### Trouble?
 
-- If you have the VPN running and you can't get your client computer to see the server Steam, usually restarting Steam on the server will get the client to see it again. It's a bit of a pain since you'll need to VNC into the computer to restart things.
+- If you have the VPN running and you can't get your client computer to see the server Steam, usually restarting Steam on the server will get the client to see it again. It's a bit of a pain since you'll need to VNC into the computer to restart things. <br/>**Updated Apr 26:** You can use `wireshark` and `netcat` to pipe broadcast pings from a mac to the EC2 machine.
+
+      tshark -T fields -e data -l 'udp and dst port 27036' | script -q /dev/null xxd -r -p | nc -b $1 -u 10.8.0.1 27036 > /dev/null
+
+  See my [up.sh](/assets/up.sh) and [down.sh](/assets/down.sh) for automating this with the OpenVPN connection. You need to do this because the mac Steam client only broadcasts to one interface, i.e. not your VPN tunnel.
 
 - If the game freezes, the way to get it out of it's broken state is to Microsoft Remote Desktop in, close things, then go back in via VNC to restore Steam, etc.
 
 - **Updated Apr 19:** If your Steam client freezes after logging in, restart the Steam server.
 
-- **Updated Apr 19:** If you only see a black screen though you do hear sound, it usually means you need adjust the MTU of the VPN. See the [OpenVPN discussion](https://forums.openvpn.net/topic15640.html), or set it on Hamachi. Also, see the Steam [In-Home Streaming discussion](https://support.steampowered.com/kb_article.php?ref=3629-RIAV-1617#nvidialaptop) about this for more ideas.
+- **Updated Apr 19:** If you only see a black screen though you do hear sound, it usually means you need adjust the MTU of the VPN. See the [OpenVPN discussion](https://forums.openvpn.net/topic15640.html), or set it on Hamachi. Also, see the Steam [In-Home Streaming discussion](https://support.steampowered.com/kb_article.php?ref=3629-RIAV-1617#nvidialaptop) about this for more ideas. **Updated Apr 26:** I've also been told that switching OpenVPN to TCP might fix things, though that seems more of a workaround since now you don't get the benefits of UDP.
 
 ### Summary
 
