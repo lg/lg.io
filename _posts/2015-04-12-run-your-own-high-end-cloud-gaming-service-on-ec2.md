@@ -87,7 +87,7 @@ See more information about this file in the [Steam In-Home Streaming](https://st
 
 - If you have the VPN running and you can't get your client computer to see the server Steam, usually restarting Steam on the server will get the client to see it again. It's a bit of a pain since you'll need to VNC into the computer to restart things. <br/>**Updated Apr 26:** You can use `wireshark` and `netcat` to pipe broadcast pings from a mac to the EC2 machine.
 
-      tshark -T fields -e data -l 'udp and dst port 27036' | script -q /dev/null xxd -r -p | nc -b $1 -u 10.8.0.1 27036 > /dev/null
+      tshark -T fields -e data -l 'udp and dst port 27036' | script -q /dev/null xxd -r -p | nc -b tap0 -u 10.8.0.1 27036 > /dev/null
 
   See my [up.sh](/assets/up.sh) and [down.sh](/assets/down.sh) for automating this with the OpenVPN connection. You need to do this because the mac Steam client only broadcasts to one interface, i.e. not your VPN tunnel.
 
