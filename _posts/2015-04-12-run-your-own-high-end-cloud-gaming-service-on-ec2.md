@@ -53,7 +53,7 @@ This is all fun and games, but you need to make sure of two things:
 
 1. Start the Windows Audio Service as per the instructions [here](http://www.win2012workstation.com/enable-sound/). Also, since you're on EC2, those machines do not virtualize a sound card. So install [VB-Cable](http://vb-audio.pagesperso-orange.fr/Cable/index.htm) so you can get sound. **Updated Apr 25:** Alternatively, you can install the more-commercial [Razer Surround](http://www.razerzone.com/surround) to simulate 5.1 -- it's pretty cool.
 
-1. **Updated Apr 19:** Install OpenVPN via the instructions [here](https://community.openvpn.net/openvpn/wiki/Easy_Windows_Guide). Make sure to use the TAP interface so Steam's multicast discovery gets forwarded. Here is my [server config](/assets/server.ovpn) and [client config](/assets/client.ovpn). I personally use [TunnelBlick](https://code.google.com/p/tunnelblick/) on my Mac as the client. You can alternatively use [Hamachi](https://secure.logmein.com/products/hamachi/) for both the server and client which is easier to set up, but I prefer to use non-commercial products. I was unable to get the built-in Windows VPN to work with multicast (if you could get it to work, email me please!)
+1. **Updated Apr 19:** Install OpenVPN via the instructions [here](https://community.openvpn.net/openvpn/wiki/Easy_Windows_Guide). Make sure to use the TAP interface so Steam's multicast discovery gets forwarded. Here is my [server config](/assets/server.ovpn) and [client config](/assets/client.ovpn). I personally use [TunnelBlick](https://code.google.com/p/tunnelblick/) on my Mac as the client. <br/>**Updated May 7:** You can alternatively use [ZeroTier](https://www.zerotier.com) for both the server and client which is easier to set up, and still free, but less configurable. Remember to create a network on their website and enabling IP addressing.
 
 1. Install Steam and get yourself on the Beta channel (available in the preferences). Also, start downloading whatever games you'll want to stream. Oh and on your own Steam installation, make sure to turn on Hardware Decoding in the Steam settings, and I also recommend turning on Display Performance Information.
 <br>![Steam Settings](/assets/steamsettings.png)
@@ -95,7 +95,7 @@ See more information about this file in the [Steam In-Home Streaming](https://st
 
 - **Updated Apr 19:** If your Steam client freezes after logging in, restart the Steam server.
 
-- **Updated Apr 19:** If you only see a black screen though you do hear sound, it usually means you need adjust the MTU of the VPN. See the [OpenVPN discussion](https://forums.openvpn.net/topic15640.html), or set it on Hamachi. Also, see the Steam [In-Home Streaming discussion](https://support.steampowered.com/kb_article.php?ref=3629-RIAV-1617#nvidialaptop) about this for more ideas. **Updated Apr 26:** I've also been told that switching OpenVPN to TCP might fix things, though that seems more of a workaround since now you don't get the benefits of UDP.
+- **Updated Apr 19:** If you only see a black screen though you do hear sound, it usually means you need adjust the MTU of the VPN. See the [OpenVPN discussion](https://forums.openvpn.net/topic15640.html). Also, see the Steam [In-Home Streaming discussion](https://support.steampowered.com/kb_article.php?ref=3629-RIAV-1617#nvidialaptop) about this for more ideas. **Updated Apr 26:** I've also been told that switching OpenVPN to TCP might fix things, though that seems more of a workaround since now you don't get the benefits of UDP.
 
 ### Summary
 
