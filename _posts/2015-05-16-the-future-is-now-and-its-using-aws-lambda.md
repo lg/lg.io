@@ -37,7 +37,7 @@ One thing you might note is that we're exposing our AWS public and secret keys. 
 
 Oh and I mentioned that it scales "infinitely", yeah there's a 100-parallel-requests maximum right now, but I'd imagine this will be removed by AWS as the service matures. Meanwhile, you can ask them for more.
 
-I guess recent AWS changes makes makes my [lambda-job](https://github.com/lg/lambda-job) project kinda useless. It's all built in now.
+I guess recent AWS changes makes my [lambda-job](https://github.com/lg/lambda-job) project kinda useless. It's all built in now.
 
 Very cool stuff. Hat tip to Amazon for constantly doing new amazing things.
 
