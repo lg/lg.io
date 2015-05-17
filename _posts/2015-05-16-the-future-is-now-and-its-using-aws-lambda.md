@@ -29,7 +29,7 @@ And lets run it:
 
 ![Result code](/assets/lambda-3.png)
 
-FYI, this is crazy. We just did a backend call with full-on backend logic without setting up any kind of instances. No worrying about starting a new [no-even-free-anymore](https://blog.heroku.com/archives/2015/5/7/new-dyno-types-public-beta) Heroku Dyno. No choosing machine speed and memory and hard drive sizes. It just works, effortlessly, and scales enormously.
+FYI, this is crazy. We just did a backend call with full-on backend logic without setting up any kind of instances. No worrying about starting a new [not-even-free-anymore](https://blog.heroku.com/archives/2015/5/7/new-dyno-types-public-beta) Heroku Dyno. No choosing machine speed and memory and hard drive sizes. It just works, effortlessly, and scales enormously.
 
 One thing you might note is that we're exposing our AWS public and secret keys. This is actually not that big of a deal. To make this secure, we actually created a new AWS User and with a Policy specifically preventing everything except the one Lambda Function:
 
