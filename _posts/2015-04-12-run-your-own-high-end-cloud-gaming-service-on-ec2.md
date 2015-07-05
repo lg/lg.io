@@ -75,10 +75,10 @@ One other thing you should do is hit F8 while playing (note that sometimes this 
     "AvgNetworkMS"    "7.0888233184814453"
     "AvgDecodeMS"     "3.7478375434875488"
     "AvgDisplayMS"    "6.3670969009399414"
-    
+
     "AvgFrameMS"      "27.798770904541016"
     "AvgFPS"          "57.622333526611328"
-  
+
 Unfortunately Steam doesnt support pulling the video from the H264 encoder on the GRID's NvFBC (which would reduce AvgEncodeMS a bunch). If you were running a GTX video card locally this is one thing that'd make it faster than using EC2 (in addition to largely decreasing NetworkMS).
 
 See more information about this file in the [Steam In-Home Streaming](https://steamcommunity.com/groups/homestream/discussions/0/540733523404402134/) Steam Group.
