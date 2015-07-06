@@ -7,6 +7,8 @@ published: True
 
 ---
 
+**NOTE: This article has been superseded by my more recent one [here]({% post_url 2015-07-05-revised-and-much-faster-run-your-own-highend-cloud-gaming-service-on-ec2 %})**
+
 **How to use EC2 GPU machines + Steam In-Home Streaming + a VPN to play AAA titles on a shitty laptop**
 
 ![Live streaming](/assets/ingamestreaming.jpg)

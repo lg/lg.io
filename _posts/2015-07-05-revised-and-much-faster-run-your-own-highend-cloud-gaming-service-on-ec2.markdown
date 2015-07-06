@@ -3,13 +3,11 @@ layout: post
 title: Revised and much faster, run your own high-end cloud gaming service on EC2!
 categories: []
 tags: []
-hidden: true
+published: True
 
 ---
 <iframe width="630" height="472" src="https://www.youtube.com/embed/pNs_D8JxADA" frameborder="0" allowfullscreen></iframe>
 **Playing Witcher 3, a GPU-intensive game on a 2015 fanless Macbook**
-
-- **TODO: Add a subscribe thing**
 
 I've written about using EC2 as a gaming rig [in the past]({% post_url 2015-04-12-run-your-own-high-end-cloud-gaming-service-on-ec2 %}). After spending some time and getting all sorts of feedback from many people, I'm re-writing the article from before, except with all the latest and greatest optimizations to really make things better. Now we're using things like NvFBC for graphics card H.264 encoding, using the built-in SSD for better hard drive performance, plus getting rid of things like VNC. I've also made the OpenVPN instructions easier to follow.
 
@@ -203,8 +201,10 @@ Lets face it, following all of the stuff above is a long, tedious process. Thoug
 
 1. Follow [step 2](#step2) except the password for the instance is `rRmbgYum8g`. Once you log in using Microsoft Remote Desktop, you'll be asked to change the Administrator password. Change it to something.
 
-1. Install [TunnelBlick](https://code.google.com/p/tunnelblick/) on your Mac. Download the VPN configuration from [here](/assets/ec2gaming-tblk.zip) and unzip it. In the `client.ovpn` file, change `YOUR_HOSTNAME_HERE` to your instance's IP/hostname. Rename this folder to `ec2gaming.tblk` and double click on it to import. Connect to the VPN with username `Administrator` and the password you used in the previous step.
+1. Install [TunnelBlick](https://code.google.com/p/tunnelblick/) on your Mac. Download the VPN configuration from [here](/assets/ec2gaming-tblk.zip) and unzip it. In the `client.ovpn` file, change `YOUR_HOSTNAME_HERE` to your instance's IP/hostname. Rename this folder to `ec2gaming.tblk` and double click on it to import. Connect to the VPN with username `Administrator` and the password you set in the previous step.
 
 1. Set up Steam [as above](#setting-up-steam), though it's already installed. Just login with your account credentials and configure it accordingly.
 
-1. You should be good to go! Use the `logout` link at the top-right of the Desktop to log out, and then follow the standard [Gaming Time](#gaming-time) section above.
+1. You should be good to go! Use the `logout` shortcut on the Desktop to log out, and then follow the standard [Gaming Time](#gaming-time) section above.
+
+_Huge thanks for helping me with this goes out to: [@crisg](http://twitter.com/crisg), [@martinmroz](http://twitter.com/martinmroz), Jeff K. from AWS Support, Daniel Unterberger, and Clive Blackledge_
