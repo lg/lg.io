@@ -6,6 +6,7 @@ tags: []
 published: True
 
 ---
+
 <iframe width="630" height="472" src="https://www.youtube.com/embed/pNs_D8JxADA" frameborder="0" allowfullscreen></iframe>
 **Playing Witcher 3, a GPU-intensive game on a 2015 fanless Macbook**
 
