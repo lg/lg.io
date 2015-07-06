@@ -15,11 +15,11 @@ I've written about using EC2 as a gaming rig [in the past]({% post_url 2015-04-1
 
 This is the perfect solution for you fanatics that love to play AAA games but are stuck with one of the new fan-less Macbooks (or similarly slow machines). This is a pretty awesome alternative to building out a new gaming PC. Just make sure you have a good internet connection (ideally 30mbit+ plus <50ms ping to the [closest Amazon datacenter](http://cloudping.info)). This article will assume you're on a Mac client, though it should work on Linux or Windows with some minor changes in the client tools.
 
-**TLDR: I have made an AMI for you to use such that you don't need to go through this lengthy step-by-step. Note you become less of a badass if you use the AMI and not do it yourself ;). [See instructions below](#tldr).**
+**TLDR: I have made an AMI for you to use such that you don't need to go through this lengthy step-by-step. Note you become less of a badass if you use the AMI instead of doing it yourself ;). [See instructions below](#using-the-pre-made-ami).**
 
 ### Costs
 
-Believe it or not, it's actually not that expensive to play games this way. Although you could potentially _save moneys_ by steaming all your games, cost savings isn't really the primary purpose. Craziness is, of course. :)
+Believe it or not, it's actually not that expensive to play games this way. Although you could potentially _save moneys_ by streaming all your games, cost savings isn't really the primary purpose. Craziness is, of course. :)
 
 - **$0.11/hr**  Spot instance of a g2.2xlarge
 - **$0.41/hr**  Streaming 10mbit at $0.09/GB
@@ -34,14 +34,18 @@ You're looking at **$0.53/hr** to play games this way. Not too bad. That's aroun
   <br>![Windows Server 2012 R2](/assets/ec2win2012.png)
   - Use a `g2.2xlarge` instance (to get an NVIDIA GRID K520 graphics card). Though a larger instance does exist in some regions, I have been unsuccessful in taking advantage of the multiple vGPUs w/ SLI. Plus it's four times the cost.
   - Use a Spot instance, it's significantly cheaper (fractions the regular cost) than regular instances. Note cost will vary depending on region. I usually bid a penny more.
-  - For the storage step, leave everything at the defaults. This will provision a 35GB EBS drive where your OS will live, and a 60GB SSD-backed instance-store (which is super fast and where the games will go). This instance-store will be available as `Z:\` drive
-  - For the Security Group, I'd recommend creating one that has 3 rules: one that allows all TCP, one that allows all UDP and one that allows ICMP. Source should be from Anywhere. Yes, its not maximum security, but with the VPNs you'll be setting up, it'll be very convenient.
+  - For the storage step, leave everything at the defaults. This will provision a 35GB EBS drive where your OS will live, and a 65GB SSD-backed instance-store (which is super fast and where the games will go). This instance-store will be available as a `Z:\` drive.
+  - For the Security Group, I'd recommend creating one that has 3 rules: one that allows `All TCP`, one that allows `All UDP` and one that allows `All ICMP`. Source should be from Anywhere for all 3. Yes, its not maximum security, but with the VPNs you'll be setting up, it'll be very convenient.
   - Finally, for the Key Pair, create a new one since you'll need one for Windows (to retrieve the Administrator password later)
 <br/><br/>
 1. <a name="step2"></a>Once your machine has spun up, [get the Windows password](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/IIS4.1GettingPassword.html) using your private key. Connect via [Microsoft Remote Desktop](https://itunes.apple.com/en/app/microsoft-remote-desktop/id715768417?mt=12) and add the details in there. Also make sure to select `Connect to admin session` to avoid GPU detection troubles. Note that your first connection might have a black screen for about a minute as it creates your user profile.
 
-1. Before we go too crazy: [disable the IE Enhanced Security Configuration](http://www.win2012workstation.com/ie-enhanced-security-configuration/) (so you can use IE), [enable auto-login](http://superuser.com/a/661386), [disable the windows firewall](http://www.dell.com/support/article/us/en/19/SLN156432/EN), and [enable showing filename extensions](https://support.software.dell.com/appassure/kb/118327).
-
+1. Before we go too crazy:
+  - [Disable the IE Enhanced Security Configuration](http://www.win2012workstation.com/ie-enhanced-security-configuration/) (so you can use IE)
+  - [Enable auto-login](http://superuser.com/a/661386)
+  - [Disable the windows firewall](http://www.dell.com/support/article/us/en/19/SLN156432/EN)
+  - [Enable showing filename extensions](https://support.software.dell.com/appassure/kb/118327)
+<br/><br/>
 1. Download and install version 347.88 of the [GeForce GTX TITAN X driver package](http://www.geforce.com/drivers/results/83080) for Windows 8.1. Only the GeForce package contains the latest drivers for the GRID cards. If you get an error when installing the drivers that says it couldn't detect a GeForce card, you're not in Remote Desktop as an `admin session`. Reboot when asked. Note that the latest version of the drivers sometimes cause Windows not to be able to restart.
 ![Geforce Titan for Windows 8.1 64-bit](/assets/geforcetitan.png)
 
@@ -50,14 +54,14 @@ You're looking at **$0.53/hr** to play games this way. Not too bad. That's aroun
 1. In order to make games actually use the video card, you'll need to completely remove the default display driver. Open up Device Manager, and a) disable the `Microsoft Basic Display Adapter`, b) uninstall it and c) run the following in a Command Prompt. Reboot afterwards.
 
 		takeown /f C:\Windows\System32\Drivers\BasicDisplay.sys
-		cacls C:\Windows\System32\Drivers\BasicDisplay.sys /G Administrator:F
+		echo Y | cacls C:\Windows\System32\Drivers\BasicDisplay.sys /G Administrator:F
 		del C:\Windows\System32\Drivers\BasicDisplay.sys
 
 	![Only the NVIDIA GRID K520](/assets/onlyonedevice.png)
 
 1. Start the Windows Audio Service as per the instructions [here](http://www.win2012workstation.com/enable-sound/). As we're also on an EC2 machine, there is no soundcard, so install [Razer Surround](http://www.razerzone.com/surround) to get a virtual soundcard, AND you get fancy 5.1 simulation! Note that there's no need to create/login to a Razer ID account.
 
-1. Download OpenVPN from [here](https://openvpn.net/index.php/open-source/downloads.html). Select the 64-bit Vista installer and when installing make sure to select to **install all components**. After installing, open a Command Prompt and run the following:
+1. Download OpenVPN from [here](https://openvpn.net/index.php/open-source/downloads.html). Select the 64-bit Vista installer and when installing make sure to select to **select to install all components**. After installing, open a Command Prompt and run the following:
 
 		cd C:\Program Files\OpenVPN\easy-rsa
 		init-config
@@ -126,11 +130,11 @@ There are two ways to see how your streaming performance is doing.
   - Make sure that the Encoder is always NVFBC. If it's not this will significantly slow things down since the H.264 encoding of the video will be done on the CPU (slower than the hardware H.264 encoding on the GRID GPU). If you see any form of `x264` here, it's using CPU encoding.
   - Same goes for making sure you're not doing software decoding. VideoToolbox is good if that's what you see.
   - The Incoming bitrate will be high, so make sure nobody else is using your internet!
-  - Packet Loss, needs to be extremely low. Often times MTU problems will bring this up in the double digits, making the game unplayable. Do a Google search for how to fix MTU problems.
+  - Packet Loss needs to be extremely low. Often times MTU problems will bring this up in the double digits, making the game unplayable. Do a Google search for how to fix MTU problems.
   - The graph on the right side is important. The colors basically mean:
-    - Dark Blue: amount of time to generate/encode the frame. If this is past 10ms, turn down your game resolution and settings.
-    - Light Blue: amount of time to transfer the frame over the network. This will be the crazy one if you don't have a spectacular connection or one of your roommates decides to start Bittorrent, etc. Try to keep this one as low to the Dark Blue line as possible, but much of it is out of your control.
-    - Red: amount of time to decode and display the H.264 video. You can't do much here except keep the resolution down and make sure hardware decoding is on.<br/><br/>
+        - Dark Blue: amount of time to generate/encode the frame. If this is past 10ms, turn down your game resolution and settings.
+        - Light Blue: amount of time to transfer the frame over the network. This will be the crazy one if you don't have a spectacular connection or one of your roommates decides to start Bittorrent, etc. Try to keep this one as low to the Dark Blue line as possible, but much of it is out of your control.
+        - Red: amount of time to decode and display the H.264 video. You can't do much here except keep the resolution down and make sure hardware decoding is on.<br/><br/>
 
 1. The second, more detailed way to look at streaming performance is to press F8 while gaming. Note this will likely crash your Mac Client in the process. An example of the output (found at `C:\Program Files (x86)\Steam\logs\streaming_log.txt` on the server):
 
@@ -187,9 +191,10 @@ There are two ways to see how your streaming performance is doing.
 - If when you start streaming a game, Steam says the **"Screen is locked"**, you'll need to make sure you close your Remote Desktop session with `tscon %sessionname% /dest:console`.
 - If you can **only see part of the game view**, it's likely it launched as a window and it's being improperly cropped by Steam. Make sure your game is in fullscreen mode (usually done in the game's options).
 - If the game is **extremely choppy**, check the Packet Loss percentage by pressing F6. If it's any higher than 1% or 2% (especially if it's around 50%), you're likely having an MTU problem. Try adjusting it according to methods mentioned on Google.
-- If the **computers can't see eachother**, on your Steam client, go to the InHome Streaming settings and disable and enable streaming. That will send the UDP Multicast packet which should be forwarded over the VPN and get the server to reveal itself. Also, check your VPN connection in general.
+- If the **computers can't see each other**, on your Steam client, go to the InHome Streaming settings and disable and enable streaming. That will send the UDP Multicast packet which should be forwarded over the VPN and get the server to reveal itself. Also, check your VPN connection in general.
+- If when you start Steam on your Mac you get a **Streaming error**, follow the instructions [here](https://steamcommunity.com/groups/homestream/discussions/1/613941122749805249/#c617319460801857830) to fix the executable.
 
-### <a name="tldr"></a>Using the pre-made AMI
+### Using the pre-made AMI
 
 Lets face it, following all of the stuff above is a long, tedious process. Though it's actually quite interesting how everything works, I'm sure you just want to get on the latest GTA pronto. As such I've made an AMI with everything above, including the optimizations.
 
