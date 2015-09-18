@@ -189,7 +189,7 @@ There are two ways to see how your streaming performance is doing.
 
 - If when you start streaming a game, Steam says the **"Screen is locked"**, you'll need to make sure you close your Remote Desktop session with `tscon %sessionname% /dest:console`.
 - If you can **only see part of the game view**, it's likely it launched as a window and it's being improperly cropped by Steam. Make sure your game is in fullscreen mode (usually done in the game's options).
-- If the game is **extremely choppy**, check the Packet Loss percentage by pressing F6. If it's any higher than 1% or 2% (especially if it's around 50%), you're likely having an MTU problem. Try adjusting it according to methods mentioned on Google.
+- If the game is **extremely choppy**, check the Packet Loss percentage by pressing F6. If it's any higher than 1% or 2% (especially if it's around 50%), you're likely having an MTU problem. Try using ZeroTier or Hamachi as the VPN instead of OpenVPN.
 - If the **computers can't see each other**, on your Steam client, go to the InHome Streaming settings and disable and enable streaming. That will send the UDP Multicast packet which should be forwarded over the VPN and get the server to reveal itself. Also, check your VPN connection in general.
 - If when you start Steam on your Mac you get a **Streaming error**, follow the instructions [here](https://steamcommunity.com/groups/homestream/discussions/1/613941122749805249/#c617319460801857830) to fix the executable.
 
@@ -200,7 +200,7 @@ Lets face it, following all of the stuff above is a long, tedious process. Thoug
 1. On AWS, create a new EC2 instance. Use the instructions on the [first step](#step1), except select the `ec2gaming` Community AMI. Don't worry about the Key Pair.
 ![EC2gaming instance](/assets/ec2gaming-ami.png)
 
-1. Follow [step 2](#step2) except the password for the instance is `rRmbgYum8g`. Once you log in using Microsoft Remote Desktop, you'll be asked to change the Administrator password. Change it to something.
+1. Follow [step 2](#step2) except the password for the instance is `rRmbgYum8g`. Once you log in using Microsoft Remote Desktop, you'll be asked to change the Administrator password. Change it to something. If you're on Windows, you'll need to use a Mac or Linux or a mobile client to reset the password since there's a bug in the Windows Remote Desktop client.
 
 1. Install [TunnelBlick](https://code.google.com/p/tunnelblick/) on your Mac. Download the VPN configuration from [here](/assets/ec2gaming-tblk.zip) and unzip it. In the `client.ovpn` file, change `YOUR_HOSTNAME_HERE` to your instance's IP/hostname. Rename this folder to `ec2gaming.tblk` and double click on it to import. Connect to the VPN with username `Administrator` and the password you set in the previous step.
 
