@@ -117,7 +117,7 @@ _Closer view of stats_<br/>
 - Because these machines have a lot of RAM, i'd suggest setting the Pagefile to something small like 16MB. See how [here](http://blogs.technet.com/b/danstolts/archive/2013/01/07/how_2d00_to_2d00_change_2d00_the_2d00_size_2d00_of_2d00_virtual_2d00_memory_2d00_pagefile_2d00_sys_2d00_on_2d00_windows_2d00_8_2d00_or_2d00_windows_2d00_server_2d00_2012.aspx). The smaller your `C:\` drive, the faster the AMI creation will be.
 - Often times games will crash when trying to start. It's usually because they're missing certain libraries. Make sure to install [.NET 3.5](https://technet.microsoft.com/en-us/library/dn482071.aspx), [XInput/Xaudio libraries](http://www.win2012workstation.com/xinput-and-xaudio-dlls/), and the Media Foundation feature package (from Server Manager). Also force run Windows Update and apply everything (including Optional packages).
 - I wouldn't suggest attempting to write scripts to backup your `Z:\` drive to `C:\` when shutting down your machine. The games download quite quickly on a fresh boot from Steam. The `C:\` drive and EBS is quite slow.
-- To make it easy to start/stop the gaming instance I've made [gaming-up.sh](/assets/gaming-up.sh) and [gaming-down.sh](/assets/gaming-down.sh). `gaming-down.sh` will terminate the instance after creating an AMI, and `gaming-up.sh` will restore this AMI. You'll need `jq` installed.
+- To make it easy to start/stop the gaming instance I've made [gaming-up.sh](/assets/gaming-up.sh) and [gaming-down.sh](/assets/gaming-down.sh). `gaming-down.sh` will terminate the instance after creating an AMI, and `gaming-up.sh` will restore this AMI. You'll need `jq` installed. Thanks to [Matt Marino](https://twitter.com/Ephs05msm), [here](https://www.evernote.com/shard/s467/sh/94042f32-9b11-45f7-a95a-1a653fc5988b/d9a81d9cb608b78e) are instructions for running this on Windows)
 - Some games don't have Steam Cloud. I'd recommend installing [Dropbox](https://www.dropbox.com) and syncing the My Documents directory with it. That way you won't lose your save game files between terminations.
 
 ### Performance gauging
@@ -208,4 +208,4 @@ Lets face it, following all of the stuff above is a long, tedious process. Thoug
 
 1. You should be good to go! Use the `logout` shortcut on the Desktop to log out, and then follow the standard [Gaming Time](#gaming-time) section above.
 
-_Huge thanks for helping me with this goes out to: [@crisg](http://twitter.com/crisg), [@martinmroz](http://twitter.com/martinmroz), Jeff K. from AWS Support, Daniel Unterberger, and Clive Blackledge_
+_Huge thanks for helping me with this goes out to: [@crisg](http://twitter.com/crisg), [@martinmroz](http://twitter.com/martinmroz), Jeff K. from AWS Support, Daniel Unterberger, Clive Blackledge, and Matt Marino_
