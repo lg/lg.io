@@ -192,6 +192,7 @@ There are two ways to see how your streaming performance is doing.
 - If the game is **extremely choppy**, check the Packet Loss percentage by pressing F6. If it's any higher than 1% or 2% (especially if it's around 50%), you're likely having an MTU problem. Try using ZeroTier or Hamachi as the VPN instead of OpenVPN.
 - If the **computers can't see each other**, on your Steam client, go to the InHome Streaming settings and disable and enable streaming. That will send the UDP Multicast packet which should be forwarded over the VPN and get the server to reveal itself. Also, check your VPN connection in general.
 - If when you start Steam on your Mac you get a **Streaming error**, follow the instructions [here](https://steamcommunity.com/groups/homestream/discussions/1/613941122749805249/#c617319460801857830) to fix the executable.
+- If the game just suddenly **hangs**, Cmd+Tab out of the game, and go back to Steam on the host. Press the "Stream" button to start the game again. This will terminate the current streaming session, and restart one that uses the same remote process. This should resume your game. (Thanks Jérémie Lumbroso!)
 
 ### Using the pre-made AMI
 
@@ -208,4 +209,4 @@ Lets face it, following all of the stuff above is a long, tedious process. Thoug
 
 1. You should be good to go! Use the `logout` shortcut on the Desktop to log out, and then follow the standard [Gaming Time](#gaming-time) section above.
 
-_Huge thanks for helping me with this goes out to: [@crisg](http://twitter.com/crisg), [@martinmroz](http://twitter.com/martinmroz), Jeff K. from AWS Support, Daniel Unterberger, Clive Blackledge, and Matt Marino_
+_Huge thanks for helping me with this goes out to: [@crisg](http://twitter.com/crisg), [@martinmroz](http://twitter.com/martinmroz), Jeff K. from AWS Support, Daniel Unterberger, Clive Blackledge, Matt Marino, and Jérémie Lumbroso_
