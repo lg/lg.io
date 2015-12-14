@@ -6,7 +6,7 @@ baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://lg.io" # the base hostname & protocol for your site
 twitter_username: lg
 github_username: lg
-highlighter: coderay
+highlighter: pygments
 timezone: America/Los_Angeles
 
 # Build settings
@@ -16,4 +16,4 @@ kramdown:
 
 gems:
   - jekyll-gist
-  - coderay
+  - pygments
