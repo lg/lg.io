@@ -1,0 +1,6 @@
+- use TABS (not saces), tab size 4
+- remember, this is how you do code blocks in lists:
+	*<tab>my item
+	<tab><tab>code line 1
+	<tab><tab>code line 2
+- sometimes that first table needs to be 3 spaces?
