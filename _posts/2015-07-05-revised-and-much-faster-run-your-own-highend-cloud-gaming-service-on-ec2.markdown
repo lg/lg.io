@@ -198,8 +198,18 @@ There are two ways to see how your streaming performance is doing.
 
 Lets face it, following all of the stuff above is a long, tedious process. Though it's actually quite interesting how everything works, I'm sure you just want to get on the latest GTA pronto. As such I've made an AMI with everything above, including the optimizations.
 
-1. On AWS, create a new EC2 instance. Use the instructions on the [first step](#step1), except select the `ec2gaming` Community AMI. Don't worry about the Key Pair. FYI the AMIs are: ami-017dbf6a (us-east), ami-8735c5c3 (us-west-1), ami-dfefeeef (us-west-2), ami-20175557 (eu-west-1), ami-e47842f9 (eu-central-1), ami-60cd6260 (ap-northeast-1), ami-8c5b5bde (ap-southeast-1), and ami-4d9eda77 (ap-southeast-2)
-![EC2gaming instance](/assets/ec2gaming-ami.png)
+1. On AWS, create a new EC2 instance. Use the instructions on the [first step](#step1), except select the `ec2gaming` Community AMI. Don't worry about the Key Pair. FYI the AMIs are: 
+
+    | ami-017dbf6a | (us-east)
+    | ami-8735c5c3 | (us-west-1)
+    | ami-dfefeeef | (us-west-2)
+    | ami-20175557 | (eu-west-1)
+    | ami-e47842f9 | (eu-central-1)
+    | ami-60cd6260 | (ap-northeast-1)
+    | ami-8c5b5bde | (ap-southeast-1)
+    | ami-4d9eda77 | (ap-southeast-2)
+
+    ![EC2gaming instance](/assets/ec2gaming-ami.png)
 
 1. Follow [step 2](#step2) except the password for the instance is `rRmbgYum8g`. Once you log in using Microsoft Remote Desktop, you'll be asked to change the Administrator password. Change it to something. If you're on Windows, you'll need to use a Mac or Linux or a mobile client to reset the password since there's a bug in the Windows Remote Desktop client.
 
@@ -209,4 +219,4 @@ Lets face it, following all of the stuff above is a long, tedious process. Thoug
 
 1. You should be good to go! Use the `logout` shortcut on the Desktop to log out, and then follow the standard [Gaming Time](#gaming-time) section above.
 
-_Huge thanks for helping me with this goes out to: [@crisg](http://twitter.com/crisg), [@martinmroz](http://twitter.com/martinmroz), Jeff K. from AWS Support, Daniel Unterberger, Clive Blackledge, Matt Marino, and Jérémie Lumbroso_
+_Huge thanks for helping me with this goes out to: [@crisg](http://twitter.com/crisg), [@martinmroz](http://twitter.com/martinmroz), Jeff K. from AWS Support, Daniel Unterberger, Clive Blackledge, Matt Marino, Jérémie Lumbroso, and Alexander Sandström_

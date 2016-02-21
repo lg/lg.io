@@ -7,7 +7,7 @@ published: True
 
 ---
 
-<img src="/assets/goodcert.png" style="width: 542px;" />
+<img src="/assets/goodcert.png" style="width: 542px;" /><br/>
 <sub><sup>**Wow -- I got myself a free signed SSL cert for my WiFi controller!**</sup></sub>
 
 [Lets Encrypt](https://letsencrypt.org) recently was released and is definitely super interesting. They basically issue SSL Certificates for free. SSL Certs typically would cost [hundreds of dollars](https://www.digicert.com/welcome/ssl-plus.htm) per domain and [even more](https://www.thawte.com/ssl/wildcard-ssl-certificates/) for Wildcard certificates. It's insane, it's essentially an entire industry predecated around artificial pricing for something that is essentially zero cost to generate and maintain. Not to mention holding back security and encryption on the web since not just anyone can afford hundreds of dollars a year for a cert. This entire industry is holding back progress at a massive scale, so we're going to fix that :)
@@ -16,7 +16,7 @@ With Lets Encrypt, this is all free now. As cost is no longer a problem, we can 
 
 As I'm a big fan of Ubiquiti products, I'm going to show some examples in this article for how to use Lets Encrypt to generate certificates that are compatible with the [mFi automation](https://www.ubnt.com/mfi/mport/) stuff, Ubiquiti's [Unifi wifi](https://www.ubnt.com/unifi/unifi-ap/) controller and their [Unifi Video](https://www.ubnt.com/unifi-video/unifi-video-camera-micro/) series for surveillance. Ubiquiti, as they're an enterprise company, _[imo wrongly]_ expects companies to want to host the backing controller software for these devices on-site. We're going to host them on EC2 though, so we don't need to manage servers or have people tripping over power cables. Since we're on the internet though, we need proper SSL to prevent the NSA and all their shenanigans.
 
-<img src="/assets/mfi.jpg" style="width: 145px;" /><img src="/assets/unifi.jpg" style="width: 234px;" /><img src="/assets/unifivideo.png" style="width: 250px;" />
+<img src="/assets/mfi.jpg" style="width: 145px;" /><img src="/assets/unifi.jpg" style="width: 234px;" /><img src="/assets/unifivideo.png" style="width: 250px;" /><br/>
 <sub><sup>**Ubiquiti's mFi, Unifi wireless and Unifi Video micro camera. They all need a hosted controller.**</sup></sub>
 
 *Note*: This article will be specific to configuring Ubiquiti's services, but the Lets Encrypt instructions are the same regardless of what kind of service you might want.
@@ -70,7 +70,7 @@ After the installation of the packages you want, you should be able to go to the
 
 Problem is, you're using a self-signed certificate, so your web browser will complain. Next, we're going to use Lets Encrypt to get a real certificate.
 
-<img src="/assets/badcert.png" style="width: 540px;" />
+<img src="/assets/badcert.png" style="width: 540px;" /><br/>
 <sub><sup>**Self-signed cert's not so hot. ;(**</sup></sub>
 
 ### Part C: Generating the signed certificate with Lets Encrypt
@@ -124,7 +124,7 @@ Finally, delete the PKCS #12 files (since they've already been imported), and re
 
 That's basically it! You should go to those same urls as before and you'll now *hopefully* have your browser not complaining. :)
 
-<img src="/assets/goodcert2.png" style="width: 450px;" />
+<img src="/assets/goodcert2.png" style="width: 450px;" /><br/>
 <sub><sup>**The browser likes it!**</sup></sub>
 
 ### Part E: Automating Lets Encrypt certificate renewal
