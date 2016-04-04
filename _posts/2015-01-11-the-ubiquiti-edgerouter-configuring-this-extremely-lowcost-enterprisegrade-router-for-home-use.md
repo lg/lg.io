@@ -160,9 +160,20 @@ Reminder that everything in the `/config` directory is saved across firmware upg
           protocol noip
         }
       }
-     }
+    }
 
 In order to use a non-standard hostname (or service), you need to use the `custom-` prefix to the service name. Additionally, the protocol needs to be one that ddclient [supports](https://github.com/wimpunk/ddclient/blob/master/ddclient#L452).
+
+**Update Apr 3, 2016**: There's now a way to get iwantmyname to use the build-in method too. Thanks to Ian Graves for the tip! Similar to above:
+
+    service custom-iwantmyname {
+      host-name myawesomehostname.lg.io
+      login abc@def.com
+      options script=/basicauth/ddns
+      password awesomepassword
+      protocol dyndns2
+      server iwantmyname.com
+    }
 
 ### Selective VPN routing (Policy-based Routing)
 
