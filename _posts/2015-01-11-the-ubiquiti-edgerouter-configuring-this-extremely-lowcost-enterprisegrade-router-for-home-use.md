@@ -5,12 +5,15 @@ categories: []
 tags: []
 published: True
 ---
+<sub><sup>**Updated Jan 17, 2015:** Moved the dynamic DNS away from a scheduled task to the new custom- service method</sup></sub><br/>
+<sub><sup>**Updated Apr 3, 2016:** Added dynamic DNS instructions for iwantmyname</sup></sub><br/>
+<sub><sup>**Updated Jul 24, 2016:** Added NAT-PMP for UPnP, up-to-date dynamic DNS methods, IPv6 instructions, and EdgeRouter-X mention</sup></sub>
 
 I've gotten a new, inexplicable, love for [Ubiquiti](http://ubnt.com). They fit in my favorite category of companies: they make high quality products that cost nothing compared to the old-boys-club equivalents. Oh and these products look spectacular. I'm actually quite surprised how UBNT is able to do all the things they do... I couldn't support them more.
 
-After finding out about them from [MonkeyBrains](https://twitter.com/monkeybrainsnet), I looked through their product line to be quite surprised at the feature sets, yet still low cost. Being a huge fan of networking equipment, I decided to buy their cheapest router, the EdgeMAX EdgeRouter Lite. A 3 port, gigabit-capable router, that can really only be configured by commandline.
+After finding out about them from [MonkeyBrains](https://twitter.com/monkeybrainsnet), I looked through their product line to be quite surprised at the feature sets, yet still low cost. Being a huge fan of networking equipment, I decided to buy their cheapest router (at the time), the EdgeMAX EdgeRouter Lite. A 3 port, gigabit-capable router, that can really only be configured by commandline. Today, they have an even cheaper version of it, for $50! The [EdgeRouter-X](https://www.ubnt.com/edgemax/edgerouter-x/).
 
-For this article, we're going to configure it for home-use.
+For this article, we're going to configure the EdgeRouter Lite for home-use. Instructions should be similar if not identical for the EdgeRouter-X.
 
 ![EdgeRouter Lite](/assets/erlite.png)
 
@@ -119,37 +122,16 @@ There are security problems with UPnP in general, but because of stuff like BitT
       upnp2 {
         listen-on eth1
         wan eth0
+        nat-pmp enable
+        secure-mode enable
       }
     }
 
-We're using the `upnp2` to do this. It's the more up to date UPnP server in comparison to the legacy `upnp` that was available on the Vayatta system. `upnp2` is more compatible with the latest applications too.
+We're using the `upnp2` to do this. It's the more up to date UPnP server in comparison to the legacy `upnp` that was available on the Vayatta system. `upnp2` is more compatible with the latest applications too. Ubiquiti also included the ability to configure NAT-PMP, Apple's way of doing UPnP (for things like Back To My Mac). `secure-mode` here just ensures that a computer cannot open a port for another.
 
 ### Dynamic DNS Updates
 
-It's always useful to update a dynamic dns provider like DynDNS whenever your public IP changes. I personally own [lg.io](http://lg.io) and I want it to be updated. Unfortunately my hosting provider [iwantmyname](https://iwantmyname.com/) is not supported by the [built in dynamic-dns service](https://community.ubnt.com/t5/EdgeMAX-CLI-Basics-Knowledge/EdgeMAX-Dynamic-DNS-commands/ta-p/473905).
-
-Therefore, I created a task that runs nightly to update the dns on my domain.
-
-    task-scheduler {
-      task iwantmyname_update {
-          executable {
-            path /config/user-data/iwantmyname_update.sh
-          }
-          interval 1d
-      }
-    }
-
-Reminder that everything in the `/config` directory is saved across firmware upgrades, etc. So it's safe to put scripts and such in there. In this case the `/config/user-data/iwantmyname_update.sh` contains the following as per [iwantmyname's API](http://blog.iwantmyname.com/2012/03/ddns-dynamic-dns-service-on-your-own-domain.html): 
-
-    #!/bin/sh
-
-    # This is run by task-scheduler
-
-    /usr/bin/curl -u "trivex@gmail.com:MYAWESOMEPASSWORD" "https://iwantmyname.com/basicauth/ddns?hostname=xxx.lg.io"
-
-**Note**: Firmware version 1.7 now introduces much more configuration for custom dynamic dns. This way you don't need to do it manually using the task scheduler.
-
-**Update Jan 17, 2015**: I've upgraded the router to the 1.7 alpha and have configured the router to do this in a much nicer way. Below is an example using the new `custom-` syntax:
+It's always useful to update a dynamic dns provider like DynDNS whenever your public IP changes. I personally own [lg.io](http://lg.io) and I want it to be updated. The router actually has some convenient dynamic dns abilities depending on your provider. Below is an example using the `custom-` syntax for a No-IP entry and my iwantmyname updater too:
 
     dynamic {
       interface eth0 {
@@ -159,21 +141,127 @@ Reminder that everything in the `/config` directory is saved across firmware upg
           password AWESOMEPASSWORD
           protocol noip
         }
+        service custom-iwantmyname {
+          host-name myawesomehostname.lg.io
+          login abc@def.com
+          options script=/basicauth/ddns
+          password awesomepassword
+          protocol dyndns2
+          server iwantmyname.com
+        }
       }
     }
 
-In order to use a non-standard hostname (or service), you need to use the `custom-` prefix to the service name. Additionally, the protocol needs to be one that ddclient [supports](https://github.com/wimpunk/ddclient/blob/master/ddclient#L452).
+In order to use a non-standard hostname (or service), you need to use the `custom-` prefix to the service name. Additionally, the protocol needs to be one that ddclient [supports](https://github.com/wimpunk/ddclient/blob/master/ddclient) (look for the `my %services = (` line).
 
-**Update Apr 3, 2016**: There's now a way to get iwantmyname to use the build-in method too. Thanks to Ian Graves for the tip! Similar to above:
+### IPv6
 
-    service custom-iwantmyname {
-      host-name myawesomehostname.lg.io
-      login abc@def.com
-      options script=/basicauth/ddns
-      password awesomepassword
-      protocol dyndns2
-      server iwantmyname.com
+The future is now, and you should start using IPv6. The router certainly doesn't make this easy, and there are like 50 flavors of configuring IPv6 for different ISPs. The following is what I use with my ISP MonkeyBrains.
+
+First up, like for IPv4, we'll need to add firewall rules to let IPv6 traffic pass-through the router:
+
+    firewall {
+      [...]
+      ipv6-name IPv6_WAN_IN {
+        default-action drop
+        description "IPv6 packet from the internet to LAN"
+        rule 1 {
+          action accept
+          description "Allow established sessions"
+          state {
+            established enable
+            related enable
+          }
+        }
+        rule 5 {
+          action accept
+          description "Allow ICMPv6"
+          log disable
+          protocol icmpv6
+        }
+        rule 10 {
+          action drop
+          description "Drop invalid connections"
+          state {
+            invalid enable
+          }
+        }
+     }
+     ipv6-name IPv6_WAN_LOCAL {
+        default-action drop
+        description "IPv6 WAN to Local"
+        rule 5 {
+          action accept
+          description "Allow established sessions"
+          state {
+            established enable
+            related enable
+          }
+        }
+        rule 10 {
+          action drop
+          description "Drop invalid connections"
+          state {
+            invalid enable
+          }
+        }
+        rule 15 {
+          action accept
+          protocol ipv6-icmp
+        }
+        rule 30 {
+          action accept
+          description "Allow dhcpv6"
+          destination {
+            port 546
+          }
+          protocol udp
+          source {
+            port 547
+          }
+        }
+      }
+      ipv6-receive-redirects disable
+      ipv6-src-route disable
     }
+
+Next, you'll need to get an IPv6 address for your router from your ISP. Typically they have DHCPv6 to do this for you, but not always. Fortunately for me MonkeyBrains does. Due to the way DHCPv6 works, we then use Prefix Delegation to route requests to the proper clients and we'll use SLAAC for internal discovery.
+
+    interfaces {
+      [...]
+      ethernet eth0 {
+        [...]
+        address dhcpv6
+        dhcpv6-pd {
+          pd 0 {
+            interface eth1 {
+              service slaac
+            }
+            prefix-length 64
+          }
+          rapid-commit enable
+        }
+      }
+    }
+
+Oh and don't forget to assign the IPv6 firewall rules to the internet interface:
+
+    interfaces {
+      [...]
+      ethernet eth0 {
+        [...]
+        in {
+          ipv6-name IPv6_WAN_IN
+          [...]
+        }
+        out {
+          ipv6-name IPv6_WAN_LOCAL 
+          [...] 
+        }
+      }
+    }
+
+And that should be it! Sometimes it can take a while for IPs to get set up, but once it is, you should be good to go. A good way of testing is to SSH into the router and issue the command: `ping6 google.com`. Then try it on your own computer.
 
 ### Selective VPN routing (Policy-based Routing)
 
