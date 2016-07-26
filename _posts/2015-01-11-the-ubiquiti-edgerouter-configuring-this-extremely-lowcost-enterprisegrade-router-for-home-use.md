@@ -231,7 +231,6 @@ Next, you'll need to get an IPv6 address for your router from your ISP. Typicall
       [...]
       ethernet eth0 {
         [...]
-        address dhcpv6
         dhcpv6-pd {
           pd 0 {
             interface eth1 {
