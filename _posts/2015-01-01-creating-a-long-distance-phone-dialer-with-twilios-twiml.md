@@ -8,7 +8,7 @@ published: True
 
 This winter vacation, I had a bunch of spare time at home with my parents. It turns out that my parents call to Romania a lot -- especially during the holiday season. Since Romania is far away from here in Canada, if they were to use the local phone provider, Bell, they'd be destroyed with long distance charges (c'mon guys, it's 2015!). Usually you'd go out and get calling cards, etc, but in the past, when i was still living with them, what I did to get around the high fees of Bell and the unreliability and inconvenience of calling cards is I set up Asterisk.
 
-Asterisk is a self-hosted PBX that can connect to SIP/IAX trunks provided by VoIP companies (I personally used to use [Unlimitel](unlimitel.ca), they're great). Problem with Asterisk is that it needs maintenance. It needs to run on a server, it's very complicated, patches sometimes break backwards compatibility, etc etc. I needed something less involved that if I were to get hit by a bus and go silent (otherwise known as starting a [startup](https://signwithenvoy.com)), they'd be hopeless to figure it out.
+Asterisk is a self-hosted PBX that can connect to SIP/IAX trunks provided by VoIP companies (I personally used to use [Unlimitel](unlimitel.ca), they're great). Problem with Asterisk is that it needs maintenance. It needs to run on a server, it's very complicated, patches sometimes break backwards compatibility, etc etc. I needed something less involved that if I were to get hit by a bus and go silent (otherwise known as starting a [startup](https://envoy.com)), they'd be hopeless to figure it out.
 
 Phone tech has gotten significantly more advanced in the recent years. Though some companies like Bell still party like it's 1960, companies like Twilio have come along and made things a lot more powerful, easier and cost efficient.
 
@@ -61,7 +61,7 @@ Should you have any problems, Twilio has great developer tools and debugging cap
 
 ### That's it!
 
-Twilio has been a dream to work with. Not only do we use them for [Envoy](http://signwithenvoy.com) at work, but I'm happy I now have an excuse to use them for myself too.
+Twilio has been a dream to work with. Not only do we use them for [Envoy](http://envoy.com) at work, but I'm happy I now have an excuse to use them for myself too.
 
 I have just built a maintenance-free system and saved a ton of time and headaches for the future. Cool stuff. Who'd have thought PHP could have been so useful? ;)
 

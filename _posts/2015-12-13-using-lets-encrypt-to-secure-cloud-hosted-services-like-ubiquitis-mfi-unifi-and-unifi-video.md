@@ -4,8 +4,8 @@ title: "Using Lets Encrypt to secure cloud-hosted services like Ubiquiti's mFi, 
 categories: []
 tags: []
 published: True
-
 ---
+<sub><sup>**Updated Jul 31, 2016:** Moved away from letsencrypt-auto and switched to certbot, updated the auto-renewal script, and changed the suggested cron time to weekly. Also made mention that mFi series has been discontinued.</sup></sub><br/>
 
 <img src="/assets/goodcert.png" style="width: 542px;" /><br/>
 <sub><sup>**Wow -- I got myself a free signed SSL cert for my WiFi controller!**</sup></sub>
@@ -20,6 +20,8 @@ As I'm a big fan of Ubiquiti products, I'm going to show some examples in this a
 <sub><sup>**Ubiquiti's mFi, Unifi wireless and Unifi Video micro camera. They all need a hosted controller.**</sup></sub>
 
 *Note*: This article will be specific to configuring Ubiquiti's services, but the Lets Encrypt instructions are the same regardless of what kind of service you might want.
+
+*Note*: Also heads up that the mFi line of products has currently been discontinued by Ubiquiti. Instructions here should still work though.
 
 So, lets get started!
 
@@ -46,12 +48,12 @@ Go to AWS EC2 and create an instance. For Ubiquiti products, I've found that eve
 You'll need to add Ubiquiti's repositories so you can use `apt-get` to easily install the right services.
 
 -   **mFi**:
-	
+
 		echo 'deb http://dl.ubnt.com/mfi/distros/deb/ubuntu ubuntu ubiquiti' | sudo tee -a /etc/apt/sources.list.d/100-ubnt.list
 		sudo apt-key adv --keyserver keyserver.ubuntu.com --recv C0A52C50
 		sudo apt-get update
-		sudo apt-get install mfi 
-	
+		sudo apt-get install mfi
+
 -   **Unifi**:
 
 		echo 'deb http://www.ubnt.com/downloads/unifi/debian stable ubiquiti' | sudo tee -a /etc/apt/sources.list.d/100-ubnt.list
@@ -75,21 +77,19 @@ Problem is, you're using a self-signed certificate, so your web browser will com
 
 ### Part C: Generating the signed certificate with Lets Encrypt
 
-Lets install Lets Encrypt now. Reminder that this needs to be done on this server, not your local machine.
+Lets install Lets Encrypt now. Reminder that this needs to be done on this server, not your local machine. We'll be using [certbot](https://certbot.eff.org) and essentially the [instructions](https://certbot.eff.org/#ubuntutrusty-other) there.
 
-	sudo apt-get install git
-	git clone https://github.com/letsencrypt/letsencrypt
-	letsencrypt/letsencrypt-auto
+	wget https://dl.eff.org/certbot-auto
+	chmod a+x certbot-auto
+	./certbot-auto
 
-That last line will configure Lets Encrypt and also install some dependencies. Typically you'd use it for generating certificates, so it'll error for now about not knowing what to do. That's fine.
+That last line will configure certbot and also install some dependencies.
 
-Now, using Lets Encrypt, we generate the signed certificate. Surprisingly it's just a one-liner:
+Now, using certbot, we generate the signed certificate. So lets run the wizard:
 
-	letsencrypt/letsencrypt-auto certonly --text --standalone --standalone-supported-challenges tls-sni-01 --domain mysubdomain.mydomain.com --email me@myemail.com --agree-tos --renew-by-default 
+	./certbot-auto certonly
 
-Make sure to change `mysubdomain.mydomain.com` to whatever your domain is, and `me@myemail.com` to whatever your personal email address is (they use it to remind you when your cert will expire, and more).
-
-<br/>
+Select option 2 (to use a temporary webserver), then enter your email (so you get alerts if things go wrong), agree to the agreement, then finally type in your domain name (along with the subdomain). If everything went well you should get a Congratulations message.
 
 ### Part D: Load the certs into the services
 
@@ -129,12 +129,12 @@ That's basically it! You should go to those same urls as before and you'll now *
 
 ### Part E: Automating Lets Encrypt certificate renewal
 
-As mentioned before, Lets Encrypt certificates only last 3 months. As such, we'll need to get this machine to renew the certificates probably monthly and then place the new certs back into services. It's essentially doing parts C and D on a scheduled job using `cron`.
+As mentioned before, Lets Encrypt certificates only last 3 months. As such, we'll need to get this machine to attempt to renew the certificates probably weekly and then place the new certs back into services. It's essentially doing parts C and D on a scheduled job using `cron`. Weekly can seem like a lot, but it'll fail fast if no renewal is necessary.
 
 Create a new file `/home/ubuntu/renew_lets_encrypt_cert.sh` and customize it according to what you used in Parts C and D. No `sudo` needed since cron will run it automatically as a super user. Use full paths to files. Here's an example:
 
 	# Get the certificate from LetsEncrypt
-	/home/ubuntu/letsencrypt/letsencrypt-auto certonly --text --standalone --standalone-supported-challenges tls-sni-01 --domain mysubdomain.mydomain.com --email me@myemail.com --agree-tos --renew-by-default
+	/home/ubuntu/certbot-auto renew --quiet --no-self-upgrade
 
 	# Convert cert to PKCS #12 format
 	openssl pkcs12 -export -inkey /etc/letsencrypt/live/mysubdomain.mydomain.com/privkey.pem -in /etc/letsencrypt/live/mysubdomain.mydomain.com/fullchain.pem -out /home/ubuntu/cert.p12 -name ubnt -password pass:temppass
@@ -156,9 +156,9 @@ Make sure to make this executable:
 
 Lets start modifying the crontab file with `sudo crontab -e` and put the following at the bottom:
 
-	1 1 1 * * /home/ubuntu/renew_lets_encrypt_cert.sh
+	1 1 * * 1 /home/ubuntu/renew_lets_encrypt_cert.sh
 
-This will schedule the certificate renewal on the 1st of every month.
+This will schedule the certificate renewal every week on Monday at 1:01am
 
 And now you're really done! You have a free SSL certificate by Lets Encrypt being automatically renewed and assigned to the different services on a monthly basis.
 
