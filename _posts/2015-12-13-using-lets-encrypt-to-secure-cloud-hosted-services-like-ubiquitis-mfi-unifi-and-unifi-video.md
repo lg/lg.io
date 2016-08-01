@@ -5,7 +5,7 @@ categories: []
 tags: []
 published: True
 ---
-<sub><sup>**Updated Jul 31, 2016:** Moved away from letsencrypt-auto and switched to certbot, updated the auto-renewal script, and changed the suggested cron time to weekly. Also made mention that mFi series has been discontinued.</sup></sub><br/>
+<sub><sup>**Updated Jul 31, 2016:** Moved away from letsencrypt-auto and switched to certbot, updated the auto-renewal script, and changed the suggested cron time to weekly. Also made mention that mFi series has been discontinued. Finally, fixed the install instructions for Unifi Video.</sup></sub><br/>
 
 <img src="/assets/goodcert.png" style="width: 542px;" /><br/>
 <sub><sup>**Wow -- I got myself a free signed SSL cert for my WiFi controller!**</sup></sub>
@@ -56,6 +56,7 @@ You'll need to add Ubiquiti's repositories so you can use `apt-get` to easily in
 
 -   **Unifi**:
 
+		# note that you can change stable to unifi5 for v5
 		echo 'deb http://www.ubnt.com/downloads/unifi/debian stable ubiquiti' | sudo tee -a /etc/apt/sources.list.d/100-ubnt.list
 		sudo apt-key adv --keyserver keyserver.ubuntu.com --recv C0A52C50
 		sudo apt-get update
@@ -63,10 +64,10 @@ You'll need to add Ubiquiti's repositories so you can use `apt-get` to easily in
 
 -   **Unifi Video**:
 
-		echo 'deb http://www.ubnt.com/downloads/unifi-video/apt trusty ubiquiti' | sudo tee -a /etc/apt/sources.list.d/100-ubnt.list
-		wget -O - http://www.ubnt.com/downloads/unifi-video/apt/unifi-video.gpg.key | sudo apt-key add -
-		sudo apt-get update
-		sudo apt-get install unifi-video
+		# visit https://community.ubnt.com/t5/UniFi-Video-Blog/bg-p/blog_airVision for the latest version instructions.
+		# here's version 3.3, though there may be a newer version by now:
+		wget http://dl.ubnt.com/firmwares/unifi-video/3.3.0/unifi-video_3.3.0~Debian7_amd64.deb
+		sudo dpkg -i unifi-video_3.3.0~Debian7_amd64.deb
 
 After the installation of the packages you want, you should be able to go to the https endpoint to see the page. It'll be: `https://<your-aws-ip>:6443` for mFi, `https://<your-aws-ip>:8443` for Unifi, and `https://<your-aws-ip>:7443` for Unifi Video.
 
