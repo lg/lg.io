@@ -50,10 +50,10 @@ You're looking at **$0.53/hr** to play games this way. Not too bad. That's aroun
 
 1. The GRID cards have an optimization Steam can use which can offload the H.264 video encoding to the GPU. We need to enable this though. Sign up for a developer account with NVidia and download and extract the [GRID SDK](https://developer.nvidia.com/grid-app-game-streaming). In the `bin` directory run the following (using a Command Prompt): `NvFBCEnable.exe -enable -noreset`. Reboot again.
 
-1. In order to make games actually use the video card, you'll need to completely remove the default display driver. Open up Device Manager, and a) disable the `Microsoft Basic Display Adapter`, b) uninstall it and c) run the following in a Command Prompt. Reboot afterwards.
+1. In order to make games actually use the video card, you'll need to completely remove the default display driver. Open up Device Manager, and a) disable the `Microsoft Basic Display Adapter`, b) uninstall it and c) run the following in a Command Prompt. Run each command undividually. Reboot afterwards.
 
 		takeown /f C:\Windows\System32\Drivers\BasicDisplay.sys
-		echo Y | cacls C:\Windows\System32\Drivers\BasicDisplay.sys /G Administrator:F
+		cacls C:\Windows\System32\Drivers\BasicDisplay.sys /G Administrator:F
 		del C:\Windows\System32\Drivers\BasicDisplay.sys
 
 	![Only the NVIDIA GRID K520](/assets/onlyonedevice.png)
@@ -198,7 +198,7 @@ There are two ways to see how your streaming performance is doing.
 
 Lets face it, following all of the stuff above is a long, tedious process. Though it's actually quite interesting how everything works, I'm sure you just want to get on the latest GTA pronto. As such I've made an AMI with everything above, including the optimizations.
 
-1. On AWS, create a new EC2 instance. Use the instructions on the [first step](#step1), except select the `ec2gaming` Community AMI. Don't worry about the Key Pair. FYI the AMIs are: 
+1. On AWS, create a new EC2 instance. Use the instructions on the [first step](#step1), except select the `ec2gaming` Community AMI. Don't worry about the Key Pair. FYI the AMIs are:
 
     | ami-017dbf6a | (us-east)
     | ami-8735c5c3 | (us-west-1)
