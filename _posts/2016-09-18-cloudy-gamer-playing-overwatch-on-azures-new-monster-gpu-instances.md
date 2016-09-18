@@ -3,7 +3,7 @@ layout: post
 title: "Cloudy Gamer: Playing Overwatch on Azure's new monster GPU instances"
 categories: []
 tags: []
-published: True
+published: False
 ---
 
 **UNPUBLISHED, DO NOT DISTRIBUTE YET**
