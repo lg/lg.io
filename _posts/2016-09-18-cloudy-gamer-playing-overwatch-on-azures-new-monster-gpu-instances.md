@@ -3,10 +3,18 @@ layout: post
 title: "Cloudy Gamer: Playing Overwatch on Azure's new monster GPU instances"
 categories: []
 tags: []
-published: False
+published: True
+hidden: true
 ---
 
 **UNPUBLISHED, DO NOT DISTRIBUTE YET**
+
+- **(TODO: link to outside articles/resources)**
+- **(TODO: see if i can make collapseable sections)**
+- **(TODO: screenshots)**
+- **(TODO: benchmarks)**
+- **(TODO: video of game streaming)**
+- **(TODO: all the other todos)**
 
 It's no secret that I love the concept of not just streaming AAA game titles from the cloud, but *playing* them live from any computer -- especially the underpowered laptops I usually use for work. I've done it before on Amazon's EC2 (and written a full article for how to do it), but this time, with the latest NVIDIA M60 GPUs becoming available on cloud providers, Microsoft's Azure is first in opening this up to any Joe like me to tinker with.
 
