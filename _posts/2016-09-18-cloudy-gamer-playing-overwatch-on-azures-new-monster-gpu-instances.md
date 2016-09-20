@@ -9,18 +9,16 @@ hidden: true
 
 **UNPUBLISHED, DO NOT DISTRIBUTE YET**
 
-- **(TODO: link to outside articles/resources)**
-- **(TODO: see if i can make collapseable sections)**
-- **(TODO: screenshots)**
 - **(TODO: benchmarks)**
 - **(TODO: video of game streaming)**
 - **(TODO: all the other todos)**
+- **(TODO: need new box - screenshots)**
 
-It's no secret that I love the concept of not just streaming AAA game titles from the cloud, but *playing* them live from any computer -- especially the underpowered laptops I usually use for work. I've done it before on Amazon's EC2 (and written a full article for how to do it), but this time, with the latest NVIDIA M60 GPUs becoming available on cloud providers, Microsoft's Azure is first in opening this up to any Joe like me to tinker with.
+It's no secret that I love the concept of not just streaming AAA game titles from the cloud, but *playing* them live from any computer -- especially the underpowered laptops I usually use for work. I've done it before using Amazon's EC2 (and written [a full article]({% post_url 2015-07-05-revised-and-much-faster-run-your-own-highend-cloud-gaming-service-on-ec2 %}) for how to do it), but this time, with the latest NVIDIA M60 GPUs becoming available on cloud providers, [Microsoft's Azure is first in opening this up](https://azure.microsoft.com/en-us/blog/azure-n-series-preview-availability/) to any Joe like me to tinker with.
 
-Before going through this article, I strongly recommend you at least skim my EC2 Gaming article from before so you can grasp some of the concepts we'll be doing here. Basically it'll come down to this: we're going to launch an Azure GPU instance, configure it for ultra-low latency streaming, and actually properly play Overwatch, a first-person shooter, from a server hundreds of miles away!
+Before going through this article, I strongly recommend you at least skim my [EC2 Gaming article]({% post_url 2015-07-05-revised-and-much-faster-run-your-own-highend-cloud-gaming-service-on-ec2 %}) from before so you can grasp some of the concepts we'll be doing here. Basically it'll come down to this: we're going to launch an [Azure GPU instance](https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/#n-series), configure it for ultra-low latency streaming, and actually properly play [Overwatch](https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/#n-series), a first-person shooter, from a server [over a thousand miles away](http://www.gcmap.com/mapui?P=SFO-HOU)!
 
-And yes, it seems I always need to repeat myself when writing these articles: the latency is just fine, the resolution is amazing, it's very cheap (cheaper than a gaming rig depending on usage patterns), and all very practical. If you're the hardcore gamer-type who's knee-jerk reaction regardless of benchmarks is "omg i dont trust anything that doesnt have a Zalman watercooled CPU fan or has a 'hardware-offloaded' networking card" or if you're in some sort of sunk-costs situation of already having spent loads of money on a gaming rig, I strongly recommend not reading this article -- it'll only further infuriate you. :)
+And yes, it seems I always need to repeat myself when writing these articles: the latency is just fine, the resolution is amazing, it's very cheap (cheaper than a gaming rig depending on usage patterns), and all very practical. If you're the hardcore gamer-type who's knee-jerk reaction regardless of benchmarks is "omg i dont trust anything that doesnt have a Zalman watercooled CPU fan or has a '[hardware-offloaded](http://www.killernetworking.com)' networking card" or if you're in some sort of sunk-costs situation of already having spent loads of money on a gaming rig, I strongly recommend not reading this article -- it'll only further infuriate you. :)
 
 For this article, I'll be assuming you're on a Mac, though the Windows instructions are very similar.
 
@@ -30,7 +28,7 @@ With that, lets get started!
 
 1. Once you're in, on Azure's dashboard, create a Windows Server 2016 instance on an NV6 type machine (has NVIDIA's new M60 GPU). The K80 machines won't work for this since they don't virtualize the display adapter we need. **(TODO UPDATE TO BE MORE CLEAR)**
 
-1. Install Microsoft Remote Desktop on your Mac if you haven't already. Connect to your Azure machine using the username/password you specified when creating the instance.
+1. Install [Microsoft Remote Desktop](https://itunes.apple.com/us/app/microsoft-remote-desktop/id715768417?mt=12) on your Mac if you haven't already. Connect to your Azure machine using the username/password you specified when creating the instance.
 
 1. Like any new Windows machine you get access to, I usually have a checklist of things I do to make it usable:
 	- Run Windows Update on it
@@ -90,7 +88,7 @@ With that, lets get started!
 			- Server
 			- Print spooler
 
-1. Install Steam (yes, even thoug we eventually want to play Overwatch, we need Steam's In-Home Streaming to work)
+1. Install Steam (yes, even though we eventually want to play Overwatch, we need Steam's [In-Home Streaming](http://store.steampowered.com/streaming/) to work)
 	- Click on the Internet Explorer button on the task bar and go to 'https://steampowered.com' and download and install it from there
 	- Configure Steam to:
 		- Save your password and auto-login
@@ -121,18 +119,18 @@ With that, lets get started!
 	- Click the Start button and type in 'Services'
 	- Double click on 'Windows Audio' and select 'Automatic' for 'Startup type'
 
-1. **(TODO: Maybe unnecessary)** Open up Internet Explorer and download Razer Surround. It creates the virtual sound card that you'll need to play games. When installing it, it might fail, so kill it using the Task Manager, but it'll have installed properly anyways.
+1. **(TODO: Maybe unnecessary)** Open up Internet Explorer and download [Razer Surround](http://www.razerzone.com/surround). It creates the virtual sound card that you'll need to play games. When installing it, it might fail, so kill it using the Task Manager, but it'll have installed properly anyways.
 	- After installing, download Autoruns, an app to let you disable startup items
 	- Search for 'Razer Synapse' and uncheck it
 
-1. For Steam In-Home Streaming to work properly, you'll need to set up a VPN. I strongly recommend ZeroTier for this since it's the best at ensuring a peer-to-peer connection between the machines and not re-routing through some other server who knows where. Oh and don't worry, for what you'll be using it for, it's free. They're also a super ethical company and opensource large amounts of their core software.
+1. For Steam In-Home Streaming to work properly, you'll need to set up a VPN. I strongly recommend [ZeroTier](https://zerotier.com) for this since it's the best at ensuring a peer-to-peer connection between the machines and not re-routing through some other server who knows where. Oh and don't worry, for what you'll be using it for, it's free. They're also a super ethical company and opensource large amounts of their core software.
 	- So, go to 'https://zerotier.com' and create an account there and create a network
 	- When configuring the network, select 'IPv4 Auto-Assign' and 'Auto-Assign from Range' and pick any range (the default works too)
 	- I'd set 'Access Control' to 'None (Public Network)' since nobody knows about your network
 	- For 'Ethernet Frame Types', I'd select only 'IPv4 (and ARP)', nothing else
 	- Now go install ZeroTier on both the server and your own computer and make them both join the same Network ID you created above
 
-1. **(TODO: Maybe unnecessary with proper firewall settings in azure)** Azure (like EC2 and others) is kind of behind the times and doesn't support IPv6. We'll need to force disable it in Windows otherwise some software might try to do a IPv6-over-IPv4 tunnel which ruins everything (Zerotier for examples tries to do this).
+1. **(TODO: Maybe unnecessary with proper firewall settings in azure)** Azure (like EC2 and others) is kind of behind the times and doesn't support IPv6. We'll need to force disable it in Windows otherwise some software might try to do a [IPv6-over-IPv4](https://en.wikipedia.org/wiki/Teredo_tunneling) tunnel which ruins everything (Zerotier for examples tries to do this).
 	- Open up an Administrator PowerShell and run the following:
 
 			Set-Net6to4Configuration –State disabled
@@ -151,7 +149,7 @@ With that, lets get started!
 			netsh interface ipv4 show subinterfaces
 			netsh interface ipv4 set subinterface "Ethernet 2" mtu=1410 store=persistent
 
-1. Install Overwatch and configure it **(TODO: Needs more details)**
+1. Install [Overwatch](https://playoverwatch.com) and configure it **(TODO: Needs more details)**
 
 1. Lets add Overwatch to Steam so we can stream it
 	- In Steam, click 'Add A Game...' and select 'Add a Non-Steam Game...'
@@ -175,4 +173,3 @@ With that, lets get started!
 	3. The machines should detect themselves and say they're connected. If they do not, go on the server and open up the Steam preferences and in In-Home Streaming, un-check and re-check the 'Enable streaming' option
 	4. With that logout.cmd you created above, right click on it and 'Run as administrator'
 	5. On your client computer find Overwatch on the side click the Play button!
-
