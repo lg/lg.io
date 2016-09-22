@@ -26,13 +26,40 @@ With that, lets get started!
 
 1. As the Azure GPU machines are still in Preview, you'll need to request access to them here: http://gpu.azure.com. Unfortunately, this also means you need to wait until you're invited. I find that harassing the PM on the project on Twitter can sometimes help: [@Karan_Batta](https://twitter.com/karan_batta). Sorry Karan ;)
 
-1. Once you're in, on Azure's dashboard, create a Windows Server 2016 instance on an NV6 type machine (has NVIDIA's new M60 GPU). The K80 machines won't work for this since they don't virtualize the display adapter we need. **(TODO UPDATE TO BE MORE CLEAR)**
+1. Once you get the email that you're in go to the Azure portal and create a new NV6 type machine (has NVIDIA's new M60 GPU). The K80 machines won't work for this since they don't virtualize the display adapter we need.
+	1. On the left side select 'Virtual machines' and click 'Add'
+	2. Select 'Windows Server' then 'Windows Server 2016 Technical Preview 5'
+	3. When prompted for the deployment model, select 'Resource Manager' and click the 'Create' button
+	4. Enter credentials for the machine. Make sure though that the 'VM disk type' is 'HDD' and the Location is 'South Central US' (this is the only location they support right now)
+	5. When prompted to pick the size (type) of machine select 'View all' up top and click on the 'NV6' machine type
+	6. On the Settings screen, most defaults are fine, but do change the Network Security Group to 'None' and turn off Diagnostics
+	7. Confirm everything on the Summary screen and the instance will launch.
 
-1. Install [Microsoft Remote Desktop](https://itunes.apple.com/us/app/microsoft-remote-desktop/id715768417?mt=12) on your Mac if you haven't already. Connect to your Azure machine using the username/password you specified when creating the instance.
+1. Install [Microsoft Remote Desktop](https://itunes.apple.com/us/app/microsoft-remote-desktop/id715768417?mt=12) on your Mac if you haven't already. Set up the machine with the username/password you specified when creating the instance and the IP address listed on Azure. Additionally:
+	- Select "Connect to admin session" on the machine's properties
+	- Unselect "Start session in full screen"
+	- Select a resolution of 1024x768
+	- Select "Don't play sound" (it's unnecessary)
+
+1. Once connected, you'll need to create a new user account that isn't the built in Administrator account
+	- Right click on the Start button and select 'Control Panel'
+	- Then select 'User Accounts' and then 'User Accounts' again, then 'Manage Accounts'
+	- Then click to add and create a new user
+	- Once created, click on it on the list
+	- Click on 'Change Account Type' and select 'Administrator'
+	- Save everything and disconnect from the session
+
+1. Set up this new user on Microsoft Remote Desktop on the client side and re-login with the new account
+
+1. You'll notice that if you pull up the Device Manager that the driver will be missing for the M60 video card. Get that from [here](https://azuregpu.blob.core.windows.net/nv-drivers/362.56_grid_win10_64bit_english.exe). It's a custom build for Azure right now, so using NVidia's site driver may not work. The version as of writing this is at 362.56. Do the regular Express install and reboot when completed.
+
+1. Now opening up the Device Manager you should have a nice new surprise!
 
 1. Like any new Windows machine you get access to, I usually have a checklist of things I do to make it usable:
 	- Run Windows Update on it
 		- Click the Start button and select 'Settings', then select 'Update & Security' and run Windows Update there
+		- It can take a while for this to complete, and even might appear to be stuck at a certain percentage, but all is ok, just keep waiting
+		- Once it completes, restart the machine. It'll probably take several minutes until the machine will be back up and running.
 
 	- Turn on always showing icons in the system tray
 		- Right click on the taskbar and select 'Properties', then select 'Notification area' > 'Customize...'
