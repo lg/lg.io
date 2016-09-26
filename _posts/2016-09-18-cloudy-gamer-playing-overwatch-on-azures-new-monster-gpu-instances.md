@@ -13,12 +13,25 @@ hidden: true
 - **(TODO: video of game streaming)**
 - **(TODO: all the other todos)**
 - **(TODO: need new box - screenshots)**
+- **(TODO: azure vpn gateway? )**
 
 It's no secret that I love the concept of not just streaming AAA game titles from the cloud, but *playing* them live from any computer -- especially the underpowered laptops I usually use for work. I've done it before using Amazon's EC2 (and written [a full article]({% post_url 2015-07-05-revised-and-much-faster-run-your-own-highend-cloud-gaming-service-on-ec2 %}) for how to do it), but this time, with the latest NVIDIA M60 GPUs becoming available on cloud providers, [Microsoft's Azure is first in opening this up](https://azure.microsoft.com/en-us/blog/azure-n-series-preview-availability/) to any Joe like me to tinker with.
 
 Before going through this article, I strongly recommend you at least skim my [EC2 Gaming article]({% post_url 2015-07-05-revised-and-much-faster-run-your-own-highend-cloud-gaming-service-on-ec2 %}) from before so you can grasp some of the concepts we'll be doing here. Basically it'll come down to this: we're going to launch an [Azure GPU instance](https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/#n-series), configure it for ultra-low latency streaming, and actually properly play [Overwatch](https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/#n-series), a first-person shooter, from a server [over a thousand miles away](http://www.gcmap.com/mapui?P=SFO-HOU)!
 
 And yes, it seems I always need to repeat myself when writing these articles: the latency is just fine, the resolution is amazing, it's very cheap (cheaper than a gaming rig depending on usage patterns), and all very practical. If you're the hardcore gamer-type who's knee-jerk reaction regardless of benchmarks is "omg i dont trust anything that doesnt have a Zalman watercooled CPU fan or has a '[hardware-offloaded](http://www.killernetworking.com)' networking card" or if you're in some sort of sunk-costs situation of already having spent loads of money on a gaming rig, I strongly recommend not reading this article -- it'll only further infuriate you. :)
+
+**(TODO PRICING)**
+server: $0.73/hr
+data: 30mbit = 3.75MB/s at 9c/GB
+	= 13.5 GB/hr
+	= $1.22/hr
+storage: 100GB = $2.40/mo
+	= $0.003/hr
+TOTAL:
+	= $1.95/hr
+
+512 hours
 
 For this article, I'll be assuming you're on a Mac, though the Windows instructions are very similar.
 
