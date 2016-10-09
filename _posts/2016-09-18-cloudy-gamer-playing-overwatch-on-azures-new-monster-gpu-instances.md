@@ -138,12 +138,19 @@ With that, lets get started!
 	- Open up the File Explorer and click 'View' up top
 	- Put a check in 'File name extensions', geez, how is hiding extensions ok?
 
-1. Turn off Combining taskbar icons
+1. Turn off Combining taskbar icons and some other taskbar cleanups
+	- Right click on the taskbar and uncheck 'Show Task View button' and 'Show touch keyboard button'
 	- Right click on the taskbar and select 'Properties', then select 'Taskbar buttons' > 'Never combine'
 
 1. Fix the time zone because you're not some crazy sysadmin
 	- Right click the time in the systray and select 'Adjust date/time'
 	- Select 'Time zone' to be where you are
+
+1. Make the Server Manager not start up every time the computer does
+	- Open the Server Manager
+	- Go to the 'Manage' menu and select 'Server Manager Properties'
+	- Put a check in 'Do not start Server Manager automatically at logon'
+
 
 ### Part 3: NVIDIA M60 video card
 
