@@ -10,7 +10,7 @@ hidden: true
 [![](/assets/azure-overwatch/azure-game-streaming-thumb.jpg)](/assets/azure-overwatch/azure-game-streaming.png)<br/>
 <sub><sup>**Playing Overwatch at 60FPS, 2560x1600, everything on Epic quality, and streaming from the cloud -- not too shabby!**</sup></sub>
 
-It's no secret that I love the concept of not just streaming AAA game titles from the cloud, but *playing* them live from any computer -- especially on the underpowered laptops I usually use for work. I've done it before using Amazon's EC2 (and written [a full article]({% post_url 2015-07-05-revised-and-much-faster-run-your-own-highend-cloud-gaming-service-on-ec2 %}) for how to do it), but this time, things are a little different. [Microsoft's Azure is first](https://azure.microsoft.com/en-us/blog/azure-n-series-preview-availability/) to give access to NVIDIA's new M60 GPUs, completely new beasts that really set a whole new bar for framerate and image quality.
+It's no secret that I love the concept of not just streaming AAA game titles from the cloud, but *playing* them live from any computer -- especially on the underpowered laptops I usually use for work. I've done it before using Amazon's EC2 (and written [a full article]({% post_url 2015-07-05-revised-and-much-faster-run-your-own-highend-cloud-gaming-service-on-ec2 %}) for how to do it), but this time, things are a little different. [Microsoft's Azure is first](https://azure.microsoft.com/en-us/blog/azure-n-series-preview-availability/) to give access to NVIDIA's new M60 GPUs, completely new beasts that really set a whole new bar for framerate and image quality. They're based on the newer [Maxwell architecture](https://developer.nvidia.com/maxwell-compute-architecture), versus the [Kepler](http://www.nvidia.com/object/nvidia-kepler.html) cards we've used in the past. Hopefully one day we'll get the fancy new [Pascal](http://www.nvidia.com/object/gpu-architecture.html) cards :)
 
 Before going through this article, I strongly recommend you at least skim my [EC2 Gaming article]({% post_url 2015-07-05-revised-and-much-faster-run-your-own-highend-cloud-gaming-service-on-ec2 %}) from before so you can grasp some of the concepts we'll be doing here. Basically it'll come down to this: we're going to launch an [Azure GPU instance](https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/#n-series), configure it for ultra-low latency streaming, and actually properly play [Overwatch](https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/#n-series), a first-person shooter, from a server [over a thousand miles away](http://www.gcmap.com/mapui?P=SFO-HOU)!
 
@@ -40,14 +40,14 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 
 ### Part 1: Creating the Azure instance
 
-1. Once you get the email that you're in, go to the Azure portal and create a new NV6 type machine (has NVIDIA's new M60 GPU). The K80 machines won't work for this since they don't virtualize the display adapter we need.
+1. Once you get the email that you're in, go to the Azure portal and use the following instructions to create a new NV6 type machine (has NVIDIA's new M60 GPU). The K80 machines won't work for this since they don't virtualize the display adapter we need.
 	1. Enter the Azure Portal
 	1. On the left side select 'Virtual machines' and click 'Add'
   ![](/assets/azure-overwatch/virtual-machine-listing.png)
 	2. Select 'Windows Server' then 'Windows Server 2016 Technical Preview 5'
 	![](/assets/azure-overwatch/windows-server-tile.png)
 	![](/assets/azure-overwatch/windows-server-20160r5.png)
-	3. When prompted for the deployment model, select 'Resource Manager' and click the 'Create' button
+	3. When prompted for the deployment model, select 'Resource Manager' from the dropdown and click the 'Create' button
 	![](/assets/azure-overwatch/resource-manager.png)
 	4. Enter a name and some credentials for the machine. Make sure though that the 'VM disk type' is 'HDD' and the Location is 'South Central US' (this is the only location they support right now)
 	![](/assets/azure-overwatch/sample-machien-config.png)
@@ -59,11 +59,11 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 	![](/assets/azure-overwatch/machine-create-summary.png)
 
 1. Install [Microsoft Remote Desktop](https://itunes.apple.com/us/app/microsoft-remote-desktop/id715768417?mt=12) on your Mac if you haven't already. Set up the machine with the username/password you specified when creating the instance and the IP address listed on Azure. Additionally:
-	- Select "Connect to admin session" on the machine's properties
+	- Select 'Connect to admin session' on the machine's properties
 	![](/assets/azure-overwatch/rdp-screen-1.png)
-	- Unselect "Start session in full screen"
+	- Unselect 'Start session in full screen'
 	- Select a resolution of 1024x768
-	- Select "Don't play sound" (it's unnecessary)
+	- For 'Sound' select 'Don't play sound' (it's unnecessary)
 	![](/assets/azure-overwatch/rdp-screen-2.png)
 
 1. Once connected, you'll need to create a new user account that isn't the account you specified earlier. This is necessary for some driver changes and auto-login steps you'll be doing later.
@@ -92,11 +92,11 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 
 1. Disable Windows Defender
 	- Click the Start button and type in 'Windows Defender'
-	- Turn off 'Real-time protection'
+	- Click Settings and turn off 'Real-time protection'
 
 1. Turn off auto Defragmenting drives (yes this is a real problem that'll happen in the middle of your games)
 	- Click the start button and type in 'Defragment' and select 'Defragment and Optimize drives'
-	- Click on 'Change settings' for 'Scheduled optimization'
+	- Click on 'Change settings' for 'Optimization schedule'
 	- Uncheck 'Run on a schedule'
 
 1. Turn on performance flags, plus turn off the boot timeout (since we're on a server)
@@ -106,14 +106,14 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 	- In the Advanced tab, select 'Programs' and click Ok
 	- Back to the 'System Properties' dialog, click the 'Settings...' button in the 'Startup and Recovery' section
 	- Uncheck 'Time to display list of operating systems' since you never get to see that anyways
-	- Finally, select '(none)' for 'Write debugging information'
+	- Finally, select '(none)' for the 'Write debugging information' dropdown
 
 1. Remove unnecessary scheduled tasks
 	- Right click the start button and select 'Computer Management'
-	- Select 'Task Scheduler' on the left side
+	- Expand 'Task Scheduler' on the left side
 	- Now for each of the following in 'Task Scheduler Library > Microsoft > Windows':
 		- Disable all tasks in 'Chkdsk'
-		- Disable all tasks in 'Diagnostics'
+		- Disable all tasks in 'Diagnosis'
 		- Disable all tasks in 'DiskCleanup'
 		- Disable all tasks in 'Maintenance'
 		- Disable all tasks in 'SystemRestore'
