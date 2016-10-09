@@ -35,7 +35,7 @@ As the Azure GPU machines are still in Preview, **you'll need to request access*
 
 Meanwhile, I suggest watching this quick video I made, plus skim the instructions. That and start saving those pennies!
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/jeapeI_Kp28" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jeapeI_Kp28" frameborder="0" allowfullscreen></iframe><sub><sup>**Note: playing via the cloud doesn't make you suck any less at gaming ;)**</sup></sub>
 <br/>
 
 ### Part 1: Creating the Azure instance
