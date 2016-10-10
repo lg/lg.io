@@ -18,6 +18,8 @@ And yes, it seems I always need to repeat myself when writing these articles: th
 
 Note that in this article I assume you're on a computer similar to mine (a Macbook laptop running MacOS). That's not a requirement to do this stuff though. You could be on Linux or Windows as a client, though some of the client-side tooling changes around a bit. You'll figure it out!
 
+If you have troubles, check out the [CloudyGamer subreddit](https://www.reddit.com/r/cloudygamer), I'm hoping to amass a good amount of knowledge around gaming in the cloud there.
+
 ### Costs
 
 Though in EC2-land we had cheaper servers due to Spot Instances, Azure doesn't quite have that concept yet. That means you'll be paying retail. For the bandwidth, it's still going to be the biggest part of the bill.
@@ -43,28 +45,24 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 1. Once you get the email that you're in, go to the Azure portal and use the following instructions to create a new NV6 type machine (has NVIDIA's new M60 GPU). The K80 machines won't work for this since they don't virtualize the display adapter we need.
 	1. Enter the Azure Portal
 	1. On the left side select 'Virtual machines' and click 'Add'
-  ![](/assets/azure-overwatch/virtual-machine-listing.png)
+  <br/>![](/assets/azure-overwatch/virtual-machine-listing.png){:width="608"}
 	2. Select 'Windows Server' then 'Windows Server 2016 Technical Preview 5'
-	![](/assets/azure-overwatch/windows-server-tile.png)
-	![](/assets/azure-overwatch/windows-server-20160r5.png)
+	<br/>![](/assets/azure-overwatch/windows-server-20160r5.png){:width="416"}
 	3. When prompted for the deployment model, select 'Resource Manager' from the dropdown and click the 'Create' button
-	![](/assets/azure-overwatch/resource-manager.png)
 	4. Enter a name and some credentials for the machine. Make sure though that the 'VM disk type' is 'HDD' and the Location is 'South Central US' (this is the only location they support right now)
-	![](/assets/azure-overwatch/sample-machien-config.png)
+	<br/>![](/assets/azure-overwatch/sample-machine-config.png){:width="485"}
 	5. When prompted to pick the size (type) of machine select 'View all' up top and click on the 'NV6' machine type. Try not to panic about the cost, we'll only be using it for a few hours while gaming, not 24/7. :)
-	![](/assets/azure-overwatch/nv6.png)
+	<br/>![](/assets/azure-overwatch/nv6.png){:width="223"}
 	6. On the Settings screen, most defaults are fine, but do change the Network Security Group to 'None' and turn off Diagnostics
-	![](/assets/azure-overwatch/more-machine-config.png)
+	<br/>![](/assets/azure-overwatch/more-machine-config.png){:width="340"}
 	7. Confirm everything on the Summary screen and the instance will launch. Note that it takes a few minutes until your machine is Running and it'll have an IP address.
-	![](/assets/azure-overwatch/machine-create-summary.png)
+	<br/>![](/assets/azure-overwatch/machine-create-summary.png){:width="606"}
 
 1. Install [Microsoft Remote Desktop](https://itunes.apple.com/us/app/microsoft-remote-desktop/id715768417?mt=12) on your Mac if you haven't already. Set up the machine with the username/password you specified when creating the instance and the IP address listed on Azure. Additionally:
 	- Select 'Connect to admin session' on the machine's properties
-	![](/assets/azure-overwatch/rdp-screen-1.png)
 	- Unselect 'Start session in full screen'
 	- Select a resolution of 1024x768
 	- For 'Sound' select 'Don't play sound' (it's unnecessary)
-	![](/assets/azure-overwatch/rdp-screen-2.png)
 
 1. Once connected, you'll need to create a new user account that isn't the account you specified earlier. This is necessary for some driver changes and auto-login steps you'll be doing later.
 	1. Right click on the Start button and select 'Control Panel'
@@ -73,7 +71,7 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 	1. Once created, click on it on the list
 	1. Click on 'Change the account type', select 'Administrator', and confirm
 	1. Close the window and disconnect from the session
-	![](/assets/azure-overwatch/both-accounts.png)
+	<br/>![](/assets/azure-overwatch/both-accounts.png){:width="774"}
 
 1. Set up this new user on Microsoft Remote Desktop on the client side and re-login with the new account. You won't need the old account anymore, so feel free to remove settings about it from Remote Desktop.
 
@@ -87,7 +85,7 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 1. Turn on ICMP Ping requests with the Windows Firewall. It's useful for debugging.
 	- Click the Start button and type 'Windows Fire' and select 'Windows firewall with Advanced Security'
 	- Select 'Inbound rules' on the left side and enable the rule 'File and Printer Sharing (Echo Request - ICMPv4-In)'
-	![](/assets/azure-overwatch/icmp-enable.png)
+	<br/>![](/assets/azure-overwatch/icmp-enable.png){:width="843"}
 	- You should now be able to ping your server machine from your laptop to figure out what the roundtrip time is
 
 1. Disable Windows Defender
@@ -130,12 +128,18 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 		- Server
 		- Print spooler
 
-1. Turn on auto-login into Windows, this is useful to make it faster to start playing games after rebooting
+1. Turn on auto-login into Windows. This is useful to make it faster to start playing games after rebooting.
 	- Press the Start button and type in 'netplwiz'
 	- Click on your username
 	- Uncheck 'Users must enter a user name and password to use this computer'
 	- Then click the OK button and enter your user's password
-	![](/assets/azure-overwatch/netplwiz.png)
+	<br/>![](/assets/azure-overwatch/netplwiz.png){:width="465"}
+
+1. Enable file extension showing and system/hidden file showing
+	- Open up the File Explorer and click 'View' up top
+	- Put a check in 'File name extensions', geez, how is hiding extensions ok?
+
+### Part 2.5: Some nice-to-haves
 
 1. Make the desktop background black (or a non-picture) to minorly speed up Remote Desktop sessions
 	- Right click the desktop and select 'Personalize'
@@ -143,7 +147,7 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 	- Then pick the black color below (or whatever color your heart desires)
 
 1. Turn off notifications of things you already told it you don't want on
-	- Click the start button and type in 'action center' and select 'Security and Maintenance'
+	- Right click the Start button, select 'Control Panel', click 'System and Security', and finally click 'Security and Maintenance'
 	- On the left side select 'Change Security and Maintenance settings'
 	- Uncheck all the things that make you feel superior to other people and don't need to be reminded about
 
@@ -152,11 +156,7 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 	- Click on 'Select which icons appear on the taskbar'
 	- Turn on 'Always show all icons in the notification area'
 
-1. Enable file extension showing and system/hidden file showing
-	- Open up the File Explorer and click 'View' up top
-	- Put a check in 'File name extensions', geez, how is hiding extensions ok?
-
-1. Turn off Combining taskbar icons and some other taskbar cleanups
+1. Turn off combining taskbar icons and some other taskbar cleanups
 	- Right click on the taskbar and uncheck 'Show Task View button' and 'Show touch keyboard button'
 	- Right click on the taskbar and select 'Properties', then select 'Taskbar buttons' > 'Never combine'
 
@@ -173,40 +173,39 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 ### Part 3: NVIDIA M60 video card
 
 1. You'll notice that if you pull up the Device Manager that the driver will be missing for the M60 video card.
-![](/assets/azure-overwatch/no-nvidia-driver.png)
+<br/>![](/assets/azure-overwatch/no-nvidia-driver.png){:width="394"}
 
-1. Get the proper driver from [here](https://azuregpu.blob.core.windows.net/nv-drivers/362.56_grid_win10_64bit_english.exe). It's a custom build for Azure right now, so using NVidia's site driver may not work. The version as of writing this is at 362.56. You may be able to find a more recent one mentioned on the [Azure forum](https://social.msdn.microsoft.com/Forums/azure/en-US/home?forum=AzureGPU).
+1. Get the proper driver from [here](https://azuregpu.blob.core.windows.net/nv-drivers/362.56_grid_win10_64bit_english.exe). It's a custom build for Azure right now, so using NVIDIA's site driver may not work. The version as of writing this is at 362.56. You may be able to find a more recent one mentioned on the [Azure forum](https://social.msdn.microsoft.com/Forums/azure/en-US/home?forum=AzureGPU).
 
 1. Do the regular Express install and reboot when completed.
-![](/assets/azure-overwatch/driver-install-done.png)
+<br/>![](/assets/azure-overwatch/driver-install-done.png){:width="812"}
 
 1. Disable the default display adapter in Windows or else games will choose the wrong one
 	- Right click the Start button and select 'Device Manager'
-	![](/assets/azure-overwatch/nvidia-driver-in.png)
+	<br/>![](/assets/azure-overwatch/nvidia-driver-in.png){:width="391"}
 	- Expand 'Display adapters', right click on 'Microsoft Hyper-V Video' and select 'Disable'. Though notice the fancy M60 card on there now too!
-	![](/assets/azure-overwatch/disable-non-nvidia-driver.png)
+	<br/>![](/assets/azure-overwatch/disable-non-nvidia-driver.png){:width="520"}
 
 1. You're using the Remote Desktop service in Windows to administer everything. The problem is that whenever you disconnect from the server, Remote Desktop will lock the screen (and you'll need to CTRL-ALT-DEL to be able to use things). This is no good if we'll want games to be running.
 	- On the desktop, right click and create a shortcut and have it run the command `tscon 1 /dest:console` and name it 'Disconnect'
-	![](/assets/azure-overwatch/disconnect-shortcut.png)
+	<br/>![](/assets/azure-overwatch/disconnect-shortcut.png){:width="638"}
 	- Right click on it, select Properties and click the 'Advanced' button
 	- Put a checkmark in the 'Run as administrator' option
-	![](/assets/azure-overwatch/run-as-admin.png)
+	<br/>![](/assets/azure-overwatch/run-as-admin.png){:width="391"}
 	- In the next step and we'll be using this link, plus also with Steam later
 
-1. Ok this is a weird one. You'll need to install TightVNC from the internet so you can configure the monitors properly. Depending on the Azure machine type you selects and the amount of graphics cards, you'll need to disable things. **(TODO: All this may be unnecessary)**
+1. Ok this is a weird one. You'll need to install TightVNC from the internet so you can configure the monitors properly. Depending on the Azure machine type you selects and the amount of graphics cards, you'll need to disable things.
 	- Download TightVNC 64-bit from [here](http://www.tightvnc.com/download.php).
 	- Install it and set some passwords.
 	- Once completed, right click on the new system tray icon, select 'Configuration...', and 'Set...' by 'Primary password' and type in a **secure** password. Remember that your machine is open to the world and people most certainly do port scan looking around for machines like yours to play with. Secure passwords are key.
-	![](/assets/azure-overwatch/tightvnc-config.png)
+	<br/>![](/assets/azure-overwatch/tightvnc-config.png){:width="485"}
 	- Now run the Disconnect shortcut you created earlier. It'll disconnect your session.
 	- On your Mac in Finder, select the Go menu and select 'Connect to Server' and type in 'vnc://<your_server_ip_address' and connect. (or do similar instructions for another VNC client)
 	- Depending on the amount of adapters your machine has, this may be a giant window. Resize it so you can see everything.
 	- Right click on the main desktop and select 'Display Settings'
 	- Under 'Multiple displays', select 'Show only on 1' and click 'Apply'
-	![](/assets/azure-overwatch/show-only-on-1.png)
+	<br/>[![](/assets/azure-overwatch/show-only-on-1-thumb.jpg){:width="717"}](/assets/azure-overwatch/show-only-on-1.png)
 	- Select 'Keep Settings' and you're done here. You can disconnect from the VNC server.
-	![](/assets/azure-overwatch/display-keep-settings.png)
 	- Go back in Remote Desktop and you can now uninstall TightVNC. This is the only config that can only be done this way.
 	- **HELP REQUESTED:** Is there a better way of doing this without needing to use TightVNC?
 
@@ -227,11 +226,11 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 	- Open up an Administrator PowerShell (click Start, right click on 'Windows PowerShell' and 'Run as Administrator'.
 	- Then run the following:
 
-			Set-Net6to4Configuration –State disabled
-			Set-NetTeredoConfiguration –Type disabled
-			Set-NetIsatapConfiguration –State disabled
+			Set-Net6to4Configuration -State disabled
+			Set-NetTeredoConfiguration -Type disabled
+			Set-NetIsatapConfiguration -State disabled
 
-	![](/assets/azure-overwatch/teredo.png)
+	![](/assets/azure-overwatch/teredo.png){:width="745"}
 
 1. For Steam In-Home Streaming to work properly, you'll need to set up a VPN. I strongly recommend [ZeroTier](https://zerotier.com) for this since it's the best at ensuring a peer-to-peer connection between the machines and not re-routing through some other server who knows where. Oh and don't worry, for what you'll be using it for, it's free. They're also a super ethical company and opensource large amounts of their core software.
 	- So, go to [Zerotier's website](https://zerotier.com) and create an account there and create a network
@@ -240,16 +239,16 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 		- For 'IPv4 Auto-Assign' select to 'Auto-Assign from Range' and pick an IP range for the VPN. You'll notice the Managed Routes above will be updated.
 		- For 'Ethernet Frame Types' unselect IPv6, it's unnecessary since Steam does not support it right now. Make sure IPv4 is on though.
 		- Write down that Network ID
-		![](/assets/azure-overwatch/zerotier-config.png)
+		<br/>[![](/assets/azure-overwatch/zerotier-config-thumb.jpg){:width="705"}](/assets/azure-overwatch/zerotier-config.png)
 	- Now, go install ZeroTier on the server. The Windows download link is [here](https://download.zerotier.com/dist/ZeroTier%20One.msi). When installing, select to approve everything, including the network adapter.
 	- At the end, it'll come up with the ZeroTier One window. Put that Network ID in there and click Join. Click Yes on any Windows prompts.
-	![](/assets/azure-overwatch/zerotier-server.png)
+	<br/>![](/assets/azure-overwatch/zerotier-server.png){:width="412"}
 	- Repeat the same installation of ZeroTier again except on your laptop. The Mac download link is [here](https://download.zerotier.com/dist/ZeroTier%20One.pkg). Have it join the same network.
-	![](/assets/azure-overwatch/zerotier-client.png)
+	<br/>![](/assets/azure-overwatch/zerotier-client.png){:width="401"}
 	- On the ZeroTier website under your network, you should now be able to see the IP addresses of the two machines.
-	![](/assets/azure-overwatch/zerotier-clients.png)
+	<br/>![](/assets/azure-overwatch/zerotier-clients.png){:width="826"}
 	- To test the tunnel works, have one ping the other by its 'Managed IP'. The ping times should be around the same as if you pinged the Physical IP of the other machine. Ideally your ping times are way lower than the ones in this screenshot... I'm looking forward to when the Azure GPU machines are closer to where I live!
-	![](/assets/azure-overwatch/pinging-zerotier.png)
+	<br/>![](/assets/azure-overwatch/pinging-via-zerotier.png){:width="573"}
 
 1. To optimize the network traffic and packet sizes Steam In-Home Streaming uses you might need to adjust MTU on the server-side. I figured out this number by trial and error and using WireShark on the client side to see when what is supposed to be one streaming packet ended up with one big packet and one tiny one.
 	- Open up an Administrator PowerShell and run the following on the server. 'Ethernet 2' here is the name of the ZeroTier adapter.
@@ -257,7 +256,7 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 			netsh interface ipv4 show subinterfaces
 			netsh interface ipv4 set subinterface "Ethernet 2" mtu=1410 store=persistent
 
-	![](/assets/azure-overwatch/network-adapters.png)
+	![](/assets/azure-overwatch/network-adapters.png){:width="1007"}
 
 1. I'd recommend rebooting now, just because of all the quirky network changes. Note that ZeroTier will always reconnect on both systems, so if you ever need to make changes, use ZeroTier One on both systems to configure things.
 
@@ -277,7 +276,7 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 			- 'Enable hardware encoding on NVIDIA GPU'
 			- 'Prioritize network traffic'
 			- Note that everything else should be unchecked. I've messed with NvFBC, but what Steam does for full-screen capture seems to be superior. Of course, you can mess with it later if you're trying to debug a game. If you try to use NvFBC, please see my previous EC2 Gaming article for instructions on how to get that set up (you need to run a tool).
-			![](/assets/azure-overwatch/steam-streaming-server.png)
+			<br/>![](/assets/azure-overwatch/steam-streaming-server.png){:width="444"}
 		- Interface > Favorite window > Library
 		- Interface > Notify me about additions or changes [...], *uncheck* it
 
@@ -290,7 +289,7 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 	- Overwatch should be on the list. Don't add it that way, rather select and add bnetlauncher.
 	- After its added, right click on it and select Properties. Set the name to be Overwatch
 	- As part of the Target, add ' Pro' after the double-quotes.
-	![](/assets/azure-overwatch/overwatch.png)
+	<br/>![](/assets/azure-overwatch/overwatch.png){:width="384"}
 
 1. On your computer (in Steam), configure it as such:
 	- In-Home Streaming > Enable streaming
@@ -299,7 +298,7 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 	- In-Home Streaming > Client options > Advanced client options > Limit resolution to > Display resolution
 	- In-Home Streaming > Client options > Advanced client options > Enable hardware decoding
 	- In-Home Streaming > Client options > Advanced client options > Display performance information
-	![](/assets/azure-overwatch/steam-streaming-client.png)
+	<br/>![](/assets/azure-overwatch/steam-streaming-client.png){:width="490"}
 
 ### Part 6: Let's play!
 
@@ -311,25 +310,33 @@ It's relatively simple to actually play, but there's some details you need to kn
 - Don't forget to Stop the Azure instance when you're done playing. It'll be very expensive if you don't.
 - These M60 cards are insanely powerful, experiment with cranking everything up! :)
 - I'll be putting together a better troubleshooting guide soon, but if you have troubles, please make sure you read every step above in detail. Even the stuff like MTU settings and disabling IPv6 have made *substantial* differences in weird scenarios for me.
+- Meanwhile, if anything comes up, check out the new subreddit I created for this: [/r/cloudygamer](https://www.reddit.com/r/cloudygamer)
 - Happy gaming!!
 
-[![](/assets/azure-overwatch/azure-game-streaming-2-thumb.jpg)](/assets/azure-overwatch/azure-game-streaming-2.png)
+[![](/assets/azure-overwatch/azure-game-streaming-2-thumb.jpg){:width="720"}](/assets/azure-overwatch/azure-game-streaming-2.png)<br/>
+<sub><sup>**So pretty :)**</sup></sub>
+<br/>
 
-There are some interesting components when pressing F6, plus the other information on screen.
+### Some details
 
-![](/assets/azure-overwatch/steam-details.jpg)
+![](/assets/azure-overwatch/steam-details.jpg)<br/>
+<sub><sup>**Steam In-Home Streaming details after pressing F6 (bottom-left of screen)**</sup></sub>
+
 - Here you can see all sorts of interesting stats: we're doing 2560x1600 at 60fps via NVENC
 - Latency is around 82ms. Once Azure spreads this tech around to all their datacenters, things should really go down in terms of latency.
 - We're doing a solid 21MBits, though in action it'll easily hit 30MBits
 
-![](/assets/azure-overwatch/steam-graph.png)
-- This graph by Steam shows the latency over time
+<br/>![](/assets/azure-overwatch/steam-graph.png)<br/>
+<sub><sup>**Steam In-Home Streaming also displays a rolling latency graph (bottom-right of screen)**</sup></sub>
+
 - Dark blue line is time it took to encode the H264 on the server side
 - Light blue line is time it took to transfer to the client side
 - Red line is decoding time and display latency
 
-![](/assets/azure-overwatch/overwatch-fps.jpg)
-- I enabled Overwatch to tell me FPS in-game just to verify things. Solid ~60FPS.
+<br/>![](/assets/azure-overwatch/overwatch-fps.jpg)<br/>
+<sub><sup>**Overwatch's FPS debugging output (top-left of screen)**</sup></sub>
 
-![](/assets/azure-overwatch/steam-fps.png)
-- And just to triple-check (and debug), Steam is configured to overlay the FPS. Also 60FPS.
+<br/>![](/assets/azure-overwatch/steam-fps.png)<br/>
+<sub><sup>**Steam's non-In-Home-Streaming FPS counter (top-right of screen)**</sup></sub>
+
+If you have troubles, please check out the [CloudyGamer subreddit](https://www.reddit.com/r/cloudygamer) -- hopefully we can simplify this process and make things easier and faster!
