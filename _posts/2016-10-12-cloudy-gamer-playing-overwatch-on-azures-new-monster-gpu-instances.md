@@ -309,8 +309,7 @@ It's relatively simple to actually play, but there's some details you need to kn
 - Always use the Disconnect link on your desktop as the way of closing your Remote Desktop session. Otherwise you'll receive a 'Screen is locked' error.
 - Don't forget to Stop the Azure instance when you're done playing. It'll be very expensive if you don't.
 - These M60 cards are insanely powerful, experiment with cranking everything up! :)
-- I'll be putting together a better troubleshooting guide soon, but if you have troubles, please make sure you read every step above in detail. Even the stuff like MTU settings and disabling IPv6 have made *substantial* differences in weird scenarios for me.
-- Meanwhile, if anything comes up, check out the new subreddit I created for this: [/r/cloudygamer](https://www.reddit.com/r/cloudygamer)
+- If you have troubles, I set up a [wiki](https://www.reddit.com/r/cloudygamer/wiki/index) on the [CloudyGamer subreddit](https://www.reddit.com/r/cloudygamer/)
 - Happy gaming!!
 
 [![](/assets/azure-overwatch/azure-game-streaming-2-thumb.jpg){:width="720"}](/assets/azure-overwatch/azure-game-streaming-2.png)<br/>
