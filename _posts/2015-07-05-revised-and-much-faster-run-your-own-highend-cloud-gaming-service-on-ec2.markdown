@@ -10,6 +10,8 @@ published: True
 <iframe width="630" height="472" src="https://www.youtube.com/embed/pNs_D8JxADA" frameborder="0" allowfullscreen></iframe>
 **Playing Witcher 3, a GPU-intensive game on a 2015 fanless Macbook**
 
+**NEW:** I've set up a subreddit for questions/discussions: [CloudyGamer subreddit](https://www.reddit.com/r/cloudygamer)
+
 I've written about using EC2 as a gaming rig [in the past]({% post_url 2015-04-12-run-your-own-high-end-cloud-gaming-service-on-ec2 %}). After spending some time and getting all sorts of feedback from many people, I'm re-writing the article from before, except with all the latest and greatest optimizations to really make things better. Now we're using things like NvFBC for graphics card H.264 encoding, using the built-in SSD for better hard drive performance, plus getting rid of things like VNC. I've also made the OpenVPN instructions easier to follow.
 
 This is the perfect solution for you fanatics that love to play AAA games but are stuck with one of the new fan-less Macbooks (or similarly slow machines). This is a pretty awesome alternative to building out a new gaming PC. Just make sure you have a good internet connection (ideally 30mbit+ plus <50ms ping to the [closest Amazon datacenter](http://cloudping.info)). This article will assume you're on a Mac client, though it should work on Linux or Windows with some minor changes in the client tools.
