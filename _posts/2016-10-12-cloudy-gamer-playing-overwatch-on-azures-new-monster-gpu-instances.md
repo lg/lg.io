@@ -22,7 +22,7 @@ If you have troubles, check out the [CloudyGamer subreddit](https://www.reddit.c
 
 ### Costs
 
-Though in EC2-land we had cheaper servers due to Spot Instances, Azure doesn't quite have that concept yet. That means you'll be paying retail. For the bandwidth, it's still going to be the biggest part of the bill.
+It's not the cheapest thing out there, but if you'll just be playing here and there it can be. Like in the past, the majority of the bill will probably come from bandwidth usage from the server (especially if youre doing 30+ MBit/s). Note that this is NV6 beta pricing -- it may change when it becomes generally available. I'll try to update the article then. Either way, remember, there's $0 upfront cost here. This contrasts dramatically to the thousands of dollars you'd end up paying for a similarly spec-ed gaming rig.
 
 - NV6 Server: $0.73/hr
 - Bandwidth at 10MBit/s: $0.41/hr
@@ -33,7 +33,7 @@ Though in EC2-land we had cheaper servers due to Spot Instances, Azure doesn't q
 
 ### Requesting access
 
-As the Azure GPU machines are still in Preview, **you'll need to request access** to them [here](http://gpu.azure.com). Unfortunately, this also means you need to wait until you're invited, though I've been told the wait times are getting shorter and shorter (still around a week or two right now). I find that harassing the PM on the project on Twitter can sometimes help: [@Karan_Batta](https://twitter.com/karan_batta). Sorry Karan ;)
+As the Azure GPU machines are still in Preview, **you'll need to request access** to them [here](http://gpu.azure.com). Unfortunately, this also means you need to wait until you're invited, though I've been told the wait times are getting shorter and shorter (still around a week or two right now).
 
 Meanwhile, I suggest watching this quick video I made, plus skim the instructions. That and start saving those pennies!
 
@@ -344,3 +344,5 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 <sub><sup>**Steam's non-In-Home-Streaming FPS counter (top-right of screen)**</sup></sub>
 
 If you have troubles, please check out the [CloudyGamer subreddit](https://www.reddit.com/r/cloudygamer) -- hopefully we can simplify this process and make things easier and faster!
+
+*Shoutout to [@Karan_Batta](https://twitter.com/karan_batta) for helping me get started with the GPU machines there!*
