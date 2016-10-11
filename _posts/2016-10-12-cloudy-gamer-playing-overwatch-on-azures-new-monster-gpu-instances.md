@@ -187,14 +187,14 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 	<br/>![](/assets/azure-overwatch/disable-non-nvidia-driver.png){:width="520"}
 
 1. You're using the Remote Desktop service in Windows to administer everything. The problem is that whenever you disconnect from the server, Remote Desktop will lock the screen (and you'll need to CTRL-ALT-DEL to be able to use things). This is no good if we'll want games to be running.
-	- On the desktop, right click and create a shortcut and have it run the command `tscon 1 /dest:console` and name it 'Disconnect'
+	- On the desktop, right click and create a new shortcut and have it run the command `tscon 1 /dest:console` and name it 'Disconnect'. NOTE: sometimes `tscon 1` isn't the correct one, try `tscon 2`. you'll know that it works if you get disconnected when running this after the remaining steps below.
 	<br/>![](/assets/azure-overwatch/disconnect-shortcut.png){:width="638"}
 	- Right click on it, select Properties and click the 'Advanced' button
 	- Put a checkmark in the 'Run as administrator' option
 	<br/>![](/assets/azure-overwatch/run-as-admin.png){:width="391"}
-	- In the next step and we'll be using this link, plus also with Steam later
+	- In the next step and going forward, we'll be using this link when needing to log out of Remote Desktop but keep the unlocked desktop available for other applications
 
-1. Ok this is a weird one. You'll need to install TightVNC from the internet so you can configure the monitors properly. Depending on the Azure machine type you selects and the amount of graphics cards, you'll need to disable things.
+1. Ok this is a weird one. You'll need to install TightVNC from the internet so you can configure the monitors properly. Depending on the Azure machine type you selected and the amount of graphics cards, you'll need to disable things.
 	- Download TightVNC 64-bit from [here](http://www.tightvnc.com/download.php).
 	- Install it and set some passwords.
 	- Once completed, right click on the new system tray icon, select 'Configuration...', and 'Set...' by 'Primary password' and type in a **secure** password. Remember that your machine is open to the world and people most certainly do port scan looking around for machines like yours to play with. Secure passwords are key.
@@ -206,12 +206,12 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 	- Under 'Multiple displays', select 'Show only on 1' and click 'Apply'
 	<br/>[![](/assets/azure-overwatch/show-only-on-1-thumb.jpg){:width="717"}](/assets/azure-overwatch/show-only-on-1.png)
 	- Select 'Keep Settings' and you're done here. You can disconnect from the VNC server.
-	- Go back in Remote Desktop and you can now uninstall TightVNC. This is the only config that can only be done this way.
+	- Go back in Remote Desktop and you can now uninstall TightVNC. This is the only configuration change that needs to be done this way.
 	- **HELP REQUESTED:** Is there a better way of doing this without needing to use TightVNC?
 
 ### Part 3: Audio
 
-1. Enable audio in Windows Server, the service is off by default
+1. Enable audio in Windows Server (the service is off by default)
 	- Click the Start button and type in 'Services'
 	- Double click on 'Windows Audio' and select 'Automatic' for 'Startup type'
 
@@ -223,7 +223,7 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 ### Part 4: ZeroTier VPN
 
 1. Azure (like EC2 and others) is still *very* fresh with IPv6, and it's current implementation is not enough for use here. We'll need to force disable it in Windows otherwise some software might try to do a [IPv6-over-IPv4](https://en.wikipedia.org/wiki/Teredo_tunneling) tunnel which ruins everything (Zerotier for examples tries to do this).
-	- Open up an Administrator PowerShell (click Start, right click on 'Windows PowerShell' and 'Run as Administrator'.
+	- Open up an Administrator PowerShell (click Start, right click on 'Windows PowerShell' and 'Run as Administrator')
 	- Then run the following:
 
 			Set-Net6to4Configuration -State disabled
@@ -241,7 +241,7 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 		- Write down that Network ID
 		<br/>[![](/assets/azure-overwatch/zerotier-config-thumb.jpg){:width="705"}](/assets/azure-overwatch/zerotier-config.png)
 	- Now, go install ZeroTier on the server. The Windows download link is [here](https://download.zerotier.com/dist/ZeroTier%20One.msi). When installing, select to approve everything, including the network adapter.
-	- At the end, it'll come up with the ZeroTier One window. Put that Network ID in there and click Join. Click Yes on any Windows prompts.
+	- At the end, it'll come up with the ZeroTier One window. Put your Network ID at the bottom and click Join. Click Yes on any Windows prompts.
 	<br/>![](/assets/azure-overwatch/zerotier-server.png){:width="412"}
 	- Repeat the same installation of ZeroTier again except on your laptop. The Mac download link is [here](https://download.zerotier.com/dist/ZeroTier%20One.pkg). Have it join the same network.
 	<br/>![](/assets/azure-overwatch/zerotier-client.png){:width="401"}
@@ -258,15 +258,15 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 
 	![](/assets/azure-overwatch/network-adapters.png){:width="1007"}
 
-1. I'd recommend rebooting now, just because of all the quirky network changes. Note that ZeroTier will always reconnect on both systems, so if you ever need to make changes, use ZeroTier One on both systems to configure things.
+1. I'd recommend rebooting now, just because of all the quirky network changes. Note that ZeroTier will always reconnect on both systems, so if you ever need to make changes, use ZeroTier One on both systems to configure network changes.
 
 ### Part 5: Steam In-Home Streaming + OverWatch
 
 1. Install Steam (yes, even though we eventually want to play Overwatch, we need Steam's [In-Home Streaming](http://store.steampowered.com/streaming/) to work)
 	- Click on the Internet Explorer button on the task bar and go to 'https://steampowered.com' and download and install it from there
-	- Configure Steam to:
+	- Configure the server Steam to:
 		- Save your password and auto-login (if you have Steam Guard on, you'll need to put in the code they email you)
-		- Account > Beta participation, and select 'Steam Beta Update'
+		- Account > Beta participation, and select 'Steam Beta Update'. Then restart Steam.
 		- Friends > Automatically sign into Friends when I start Steam
 		- In-Game > In-game FPS counter > Top-left (optional, but I like it since this is the raw FPS on the machine)
 		- In-Home Streaming > Enable streaming
@@ -275,20 +275,24 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 			- 'Enable hardware encoding'
 			- 'Enable hardware encoding on NVIDIA GPU'
 			- 'Prioritize network traffic'
-			- Note that everything else should be unchecked. I've messed with NvFBC, but what Steam does for full-screen capture seems to be superior. Of course, you can mess with it later if you're trying to debug a game. If you try to use NvFBC, please see my previous EC2 Gaming article for instructions on how to get that set up (you need to run a tool).
+			- Note that everything else should be unchecked. I've messed with NvFBC, but what Steam does for full-screen capture seems to be superior. Of course, you can mess with it later if you're trying to debug a game. If you try to use NvFBC, please see my [previous EC2 Gaming article]({% post_url 2015-07-05-revised-and-much-faster-run-your-own-highend-cloud-gaming-service-on-ec2 %}) for instructions on how to get that set up (you need to run a tool).
 			<br/>![](/assets/azure-overwatch/steam-streaming-server.png){:width="444"}
 		- Interface > Favorite window > Library
 		- Interface > Notify me about additions or changes [...], *uncheck* it
 
-1. Install [Overwatch](https://playoverwatch.com) using Blizzard's upsell-galore Battle.net launcher thingy
+1. Now lets install [Overwatch](https://playoverwatch.com):
+	1. Download and install Blizzard's upsell-galore [Desktop App for Battle.net](http://us.battle.net/en/app/) launcher thingy
+	1. Log into it with your Battle.net account
+	1. Select Overwatch on the left side and install it
+	1. Now wait until it finishes downloading/installing (takes a few minutes, but surprisingly fast!)
 
-1. Overwatch in particular has some issues quitting properly after being launched from Steam. Fortunately a tool, [bnetlauncher](http://madalien.com/stuff/bnetlauncher/) was built to help properly start/stop the game. Basically, keep the official Battle.net client running, but in the next step use this launcher.
+1. Overwatch in particular has some issues quitting properly after being launched from Steam. Fortunately a tool, [bnetlauncher](http://madalien.com/stuff/bnetlauncher/) was built to help properly start/stop the game. Basically, keep the official Battle.net client running, but in the next step use this launcher. Feel free to put it anywhere, including on your Desktop.
 
 1. To stream games we use Steam's In-Home Streaming functionality since it's the most mature game-streaming tech out there (that I'm aware of). The good news is that you can add non-Steam games (like Overwatch/bnetlauncher) and it works great too.
-	- In Steam, click 'Add A Game...' and select 'Add a Non-Steam Game...'
-	- Overwatch should be on the list. Don't add it that way, rather select and add bnetlauncher.
-	- After its added, right click on it and select Properties. Set the name to be Overwatch
-	- As part of the Target, add ' Pro' after the double-quotes.
+	- In Steam, click 'Add A Game...' (in the bottom left corner of the window) and select 'Add a Non-Steam Game...'
+	- Overwatch should be on the list, but don't add it that way. Instead, use the 'Browse...' button and then select the 'bnetlauncher' app from the previous step. Then click the 'Add Selected Programs' button.
+	- After its added, in the Games Library, right click on 'bnetlauncher' and select Properties. Set the name to be 'Overwatch'
+	- As part of the Target, add ' Pro' after the double-quotes
 	<br/>![](/assets/azure-overwatch/overwatch.png){:width="384"}
 
 1. On your computer (in Steam), configure it as such:
@@ -302,14 +306,15 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 
 ### Part 6: Let's play!
 
-It's relatively simple to actually play, but there's some details you need to know:
+1. Make sure the Steam client is running on your laptop
+2. On ther server, fully exit Steam and re-open it. After a few seconds, you should see the In-Home Streaming popup saying the two machines see eachother.
+3. Use the 'Disconnect' shortcut from earlier to close Remote Desktop
+4. On the Steam client, click the Play button and hopefully the game will load!
+5. In Overwatch, go to Options, and set the graphics quality to Epic, hit the Apply button and restart the game.
+6. Happy gaming!!
 
-- First, the Steam clients need to detect eachother. Due to a bug in the Steam Mac client, it can't broadcast over all interfaces (i.e. our VPN adapter) that it's online. This means you'll always need to start the server Steam client *second*.
-- One tip, instead of quitting the Steam client on the server, you can also go in the Settings and uncheck and recheck the 'Enable streaming' option
-- Always use the Disconnect link on your desktop as the way of closing your Remote Desktop session. Otherwise you'll receive a 'Screen is locked' error.
-- Don't forget to Stop the Azure instance when you're done playing. It'll be very expensive if you don't.
-- These M60 cards are insanely powerful, experiment with cranking everything up! :)
-- If you have troubles, I set up a [wiki](https://www.reddit.com/r/cloudygamer/wiki/index) on the [CloudyGamer subreddit](https://www.reddit.com/r/cloudygamer/)
+- Don't forget to Stop the Azure instance when you're done playing. It'll be very expensive if you don't. You can stop the VM without losing your config. If you want to delete everything, make sure to delete the Resource Group in Azure
+- If you have problems with getting going, I set up a [wiki](https://www.reddit.com/r/cloudygamer/wiki/index) on the [CloudyGamer subreddit](https://www.reddit.com/r/cloudygamer/) to hopefully help!
 - Happy gaming!!
 
 [![](/assets/azure-overwatch/azure-game-streaming-2-thumb.jpg){:width="720"}](/assets/azure-overwatch/azure-game-streaming-2.png)<br/>
