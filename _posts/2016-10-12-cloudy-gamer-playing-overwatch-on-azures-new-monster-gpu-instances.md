@@ -314,8 +314,6 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 6. Happy gaming!!
 
 - Don't forget to Stop the Azure instance when you're done playing. It'll be very expensive if you don't. You can stop the VM without losing your config. If you want to delete everything, make sure to delete the Resource Group in Azure
-- If you have problems with getting going, I set up a [wiki](https://www.reddit.com/r/cloudygamer/wiki/index) on the [CloudyGamer subreddit](https://www.reddit.com/r/cloudygamer/) to hopefully help!
-- Happy gaming!!
 
 [![](/assets/azure-overwatch/azure-game-streaming-2-thumb.jpg){:width="720"}](/assets/azure-overwatch/azure-game-streaming-2.png)<br/>
 <sub><sup>**So pretty :)**</sup></sub>
@@ -344,5 +342,7 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 <sub><sup>**Steam's non-In-Home-Streaming FPS counter (top-right of screen)**</sup></sub>
 
 If you have troubles, please check out the [CloudyGamer subreddit](https://www.reddit.com/r/cloudygamer) -- hopefully we can simplify this process and make things easier and faster!
+
+Thanks for reading! Hopefully this helps out. My day-to-day job is at [Envoy](https://envoy.com), a startup in San Francisco building pretty cool products for rethinking typically outdated processes in the workplace. We're hiring fun engineers with a passion for building re-thought tech. Check out our [jobs page](https://envoy.com/jobs/)! And definitely mention if you're into streaming games :)
 
 *Shoutout to [@Karan_Batta](https://twitter.com/karan_batta) for helping me get started with the GPU machines there!*
