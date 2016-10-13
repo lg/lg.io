@@ -4,7 +4,6 @@ title: "Cloudy Gamer: Playing Overwatch on Azure's new monster GPU instances"
 categories: []
 tags: []
 published: True
-hidden: true
 ---
 
 [![](/assets/azure-overwatch/azure-game-streaming-thumb.jpg)](/assets/azure-overwatch/azure-game-streaming.png)<br/>
