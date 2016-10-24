@@ -217,6 +217,7 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 1. There is no soundcard on the VM. A free product, VB-CABLE handles this quite well.
 	- Download it from [here](http://vbaudio.jcedeveloppement.com/Download_CABLE/VBCABLE_Driver_Pack43.zip)
 	- Extract the zip and run the 'VBCABLE_Setup_x64.exe' installer as Administrator
+	- After installing it, Windows will still say there's no installed audio device, but don't worry, Steam will pick it up. You can also see it in the Device Manager.
 
 
 ### Part 4: ZeroTier VPN
