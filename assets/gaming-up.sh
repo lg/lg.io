@@ -1,4 +1,8 @@
 #!/bin/bash
+#
+# gaming-up.sh - automates bringing up an existing ec2 ami for gaming
+#
+# special thanks to /u/funsmithery for the region fixes
 
 set -e
 
@@ -10,14 +14,16 @@ export EC2_SECURITY_GROUP_ID=zzzzzzzzz
 
 # Get the current lowest price for the GPU machine we want (we'll be bidding a cent above)
 echo -n "Getting lowest g2.2xlarge bid... "
-PRICE=$( aws ec2 describe-spot-price-history --instance-types g2.2xlarge --product-descriptions "Windows" --start-time `date +%s` | jq --raw-output '.SpotPriceHistory[].SpotPrice' | sort | head -1 )
+PRICE_AND_ZONE=($( aws ec2 describe-spot-price-history --instance-types g2.2xlarge --product-descriptions "Windows" --start-time `date +%s` | jq --raw-output '.SpotPriceHistory|=sort_by(.SpotPrice)|first(.SpotPriceHistory[].SpotPrice), first(.SpotPriceHistory[].AvailabilityZone)'))
+PRICE=${PRICE_AND_ZONE[0]}
+ZONE=${PRICE_AND_ZONE[1]}
 echo $PRICE
 
 echo -n "Looking for the ec2-gaming AMI... "
 AMI_SEARCH=$( aws ec2 describe-images --owner self --filters Name=name,Values=ec2-gaming )
 if [ $( echo "$AMI_SEARCH" | jq '.Images | length' ) -eq "0" ]; then
-	echo "not found. You must use gaming-down.sh after your machine is in a good state."
-	exit 1
+  echo "not found. You must use gaming-down.sh after your machine is in a good state."
+  exit 1
 fi
 AMI_ID=$( echo $AMI_SEARCH | jq --raw-output '.Images[0].ImageId' )
 echo $AMI_ID
@@ -27,7 +33,10 @@ SPOT_INSTANCE_ID=$( aws ec2 request-spot-instances --spot-price $( bc <<< "$PRIC
   {
     \"SecurityGroupIds\": [\"$EC2_SECURITY_GROUP_ID\"],
     \"ImageId\": \"$AMI_ID\",
-    \"InstanceType\": \"g2.2xlarge\"
+    \"InstanceType\": \"g2.2xlarge\",
+    \"Placement\": {
+      \"AvailabilityZone\": \"$ZONE\"
+    }
   }" | jq --raw-output '.SpotInstanceRequests[0].SpotInstanceRequestId' )
 echo $SPOT_INSTANCE_ID
 
