@@ -93,7 +93,7 @@ You're looking at **$0.53/hr** to play games this way. Not too bad. That's aroun
 	- I recommend you turn off Automatic Sign-in of Friends (since this server will always be logged in) in `Friends`, and turn off the promo dialog in `Interface` (at the bottom).
 	- Enable hardware encoding at `In-Home Streaming > Advanced Host Options > Enable Hardware Encoding`<br/>![Server Steam Settings](/assets/server-steam-settings.png)
 
-	<br/>On your mac, make sure you have Steam installed, but change `In-Home Streaming > Enable Hardware Decoding`. Similar settings to above might also be applicable.<br/>![Client Steam Settings](/assets/client-steam-settings.png)
+	<br/>On your mac, make sure you have Steam installed, but change `In-Home Streaming > Enable Hardware Decoding`. Similar settings to above might also be applicable. One other tip, I recommend setting the bandwidth limit to 20 or 30mbit specifically, 'Automatic' isn't good at guessing.<br/>![Client Steam Settings](/assets/client-steam-settings.png)
 
 1. Once all is set up, run the following to log out of the Remote Desktop session and *not lock the screen* (so games can start): `tscon %sessionname% /dest:console`. I suggest creating a shortcut on the desktop for this.
 ![Logout Shortcut](/assets/shortcut.png)
@@ -192,6 +192,7 @@ There are two ways to see how your streaming performance is doing.
 - If when you start streaming a game, Steam says the **"Screen is locked"**, you'll need to make sure you close your Remote Desktop session with `tscon %sessionname% /dest:console`.
 - If you can **only see part of the game view**, it's likely it launched as a window and it's being improperly cropped by Steam. Make sure your game is in fullscreen mode (usually done in the game's options).
 - If the game is **extremely choppy**, check the Packet Loss percentage by pressing F6. If it's any higher than 1% or 2% (especially if it's around 50%), you're likely having an MTU problem. Try using ZeroTier or Hamachi as the VPN instead of OpenVPN.
+- If the streaming is **really glitchy** and has bad compression, on the client Steam change the bitrate from Unlimited/Automatic to 20mbit or 30mbit.
 - If the **computers can't see each other**, on your Steam client, go to the InHome Streaming settings and disable and enable streaming. That will send the UDP Multicast packet which should be forwarded over the VPN and get the server to reveal itself. Also, check your VPN connection in general.
 - If when you start Steam on your Mac you get a **Streaming error**, follow the instructions [here](https://steamcommunity.com/groups/homestream/discussions/1/613941122749805249/#c617319460801857830) to fix the executable.
 - If the game just suddenly **hangs**, Cmd+Tab out of the game, and go back to Steam on the host. Press the "Stream" button to start the game again. This will terminate the current streaming session, and restart one that uses the same remote process. This should resume your game. (Thanks Jérémie Lumbroso!)
