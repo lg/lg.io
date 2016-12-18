@@ -25,7 +25,7 @@ As this was a new experience for me, I did a Google search for people doing thes
 - I feel like engadget was the fastest at getting pics online. The other dudes were close but engadget in almost all tests showed the latest pretty pics first. This doesn’t mean they were the fastest with text though, but they were definitely acceptable with text too.
 - Overall it was a great experience, but the freezing really removed from the experience.
 
-[**Gdgt**](http://live.gdgt.com/live-wwdc-2012-keynote-coverage/):
+[**Gdgt**](https://web-beta.archive.org/web/20140824050224/http://live.gdgt.com:80/live-wwdc-2012-keynote-coverage/):
 
 ![Gdgt coverage](/assets/gdgtcoverage.png)
 
@@ -35,7 +35,7 @@ As this was a new experience for me, I did a Google search for people doing thes
 - If you scroll down to see the image, the page would often auto-update screwing up your current view. There was no way to pause like with Engadget. This is a common problem with self-refreshing auto-updates.
 - There’s not much else to say. Like the rest though, they had great coverage.
 
-[**Macrumors**](http://www.macrumorslive.com/):
+[**Macrumors**](http://www.macrumors.com):
 
 ![Macrumors coverage](/assets/macrumorscoverage.png)
 

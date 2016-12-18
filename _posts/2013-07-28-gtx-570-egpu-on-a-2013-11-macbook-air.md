@@ -6,19 +6,19 @@ tags: []
 published: True
 ---
 
-<iframe width="560" height="315" src="//www.youtube.com/embed/kZZdwkICE3M" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/kZZdwkICE3M" frameborder="0" allowfullscreen></iframe>
 
-**Note**: This is a repost of my [TechInferno Forum article](http://forum.techinferno.com/implementation-guides/4271-%5Bguide%5D-2013-macbook-air-gtx570@4gbps-c-tbec2-pe4l-2-1b-win7.html) from July 28th, 2013. Methods have changed and are somewhat easier these days. Make sure to check out that forum for more info.
+**Note**: This is a repost of my [TechInferno Forum article](https://www.techinferno.com/index.php?/forums/topic/3225-2013-11-mba-gtx5704gbpsc-tbec2-pe4l-21b-win7-kloper/) from July 28th, 2013. Methods have changed and are somewhat easier these days. Make sure to check out that forum for more info.
 
 _**TLDR:** By buying around $250 in commonly available parts, plus a video card, you can make the graphics of your 11" Macbook Air from 5X to 7X faster. Demo video at end of post. Step-by-step, here's how to exactly do it. Warning: not for the faint of heart!_
 
 Hey everyone!
 
-This is my third article here on this forum, though it's the first that the process can be done by anyone with off-the-shelf parts. No more discontinued exotic parts like the [$180 BPlus TH05](http://www.mediafire.com/download/3xg6ie3gja1ijv7/TH05_brief.pdf) are required. All you need is a macbook air, a graphics card, a power supply, Windows 7, and ~$250 to buy some adapters and software online. All these parts are readily available for anyone.
+This is my third article here on this forum, though it's the first that the process can be done by anyone with off-the-shelf parts. No more discontinued exotic parts like the [$180 BPlus TH05](http://www.mediafire.com/?3xg6ie3gja1ijv7) are required. All you need is a macbook air, a graphics card, a power supply, Windows 7, and ~$250 to buy some adapters and software online. All these parts are readily available for anyone.
 
-Like usual, I really want to thank [nando4](http://forum.techinferno.com/members/nando4.htm) for his help in doing all this. He's the mastermind behind the technicals, I just like writing articles and making stuff easier for everyone. He's super dedicated and eGPUs wouldn't be anywhere near where they are today if it wasn't for him! Thanks!
+Like usual, I really want to thank [nando4](https://www.techinferno.com/index.php?/profile/1729-tech-inferno-fan/) for his help in doing all this. He's the mastermind behind the technicals, I just like writing articles and making stuff easier for everyone. He's super dedicated and eGPUs wouldn't be anywhere near where they are today if it wasn't for him! Thanks!
 
-So what are we doing? We're going to make a Macbook Air accept an external video card via Thunderbolt! Yes, you might have read in the news that real commercial solutions are just [around](http://www.slashgear.com/lucid-thunderbolt-external-gpu-demoed-for-undeniable-ultrabook-gaming-boost-11246826/) [the](http://www.anandtech.com/show/5352/msis-gus-ii-external-gpu-via-thunderbolt) [corner](http://www.anandtech.com/show/7040/computex-2013-thunderbolt-graphics-from-silverstone). We've been promised by these companies over-and-over again, with youtube videos, hands-on reviews, press releases, etc, but nobody is releasing anything. It's been like this for over a year. Intel even openly admits its bias against GPU usage where it's listed as unsupported in their [Thunderbolt Certification Application](http://cl.ly/0Z3Q432w2I3x). Talking to one of their thunderbolt guys, here's what that "Not Supported" means:
+So what are we doing? We're going to make a Macbook Air accept an external video card via Thunderbolt! Yes, you might have read in the news that real commercial solutions are just [around](https://www.slashgear.com/lucid-thunderbolt-external-gpu-demoed-for-undeniable-ultrabook-gaming-boost-11246826/) [the](http://www.anandtech.com/show/5352/msis-gus-ii-external-gpu-via-thunderbolt) [corner](http://www.anandtech.com/show/7040/computex-2013-thunderbolt-graphics-from-silverstone). We've been promised by these companies over-and-over again, with youtube videos, hands-on reviews, press releases, etc, but nobody is releasing anything. It's been like this for over a year. Intel even openly admits its bias against GPU usage where it's listed as unsupported in their [Thunderbolt Certification Application](http://cl.ly/0Z3Q432w2I3x). Talking to one of their thunderbolt guys, here's what that "Not Supported" means:
 
 > The “Not supported” means that Intel won’t neither certify your product nor deliver, at the moment, any Technology License for this kind of usage. As you know, this Technology License is required to develop a Thunderbolt device in the market and Certification is a must have to market any Thunderbolt product.
 
@@ -40,15 +40,15 @@ Alright, lets get started!
 
 - [**Sonnet Echo ExpressCard Pro**](http://www.sonnettech.com/product/echoexpresscard34thunderbolt.html). I purchased mine for $134 at [B&H Photo Video](http://www.bhphotovideo.com/c/product/860811-REG/Sonnet_ECHOPRO_E34_Echo_Pro_ExpressCard_34_Thunderbolt.html). This adapter turns 10Gbps Thunderbolt to 5Gbps ExpressCard, which is needed for the PE4L later. It's probably one of the more expensive parts in your setup because of Intel's arbitrage on Thunderbolt-related parts. Note that Sonnet also sells a **faster 10Gbps** Thunderbolt->PCIExpress box (~US$310 Sonnet Echo Express SE) which might seem like a great idea, but that's all sorts of problems with it, including an underpowered power supply, no PCI Delay switch (making it not easily work with Windows) and dismantling it to be able to use full length and double width video cards.
 
-- [**$70 BPlus PE4L V2.1**](http://www.hwtools.net/Adapter/PE4L%20V2.1.html) ExpressCard to PCI-Express adapter. You want the PE4L-EC060A package that includes the SWEX adapter to power on your power supply. If wanting a neater enclosure solution then purchase a [$170 BPlus PE4H V3.2](http://www.hwtools.net/Adapter/PE4H%20V3.2.html) instead, noting that your chosen video card will require the pci-e power connectors on the side of the card rather than the top. If you're curious, BPlus used to offer a [US$180 TH05](http://www.mediafire.com/download/3xg6ie3gja1ijv7/TH05_brief.pdf) (which included the TB cable), which was a direct Thunderbolt to PCI-Express, but Intel shut it down and the entire BPlus Thunderbolt division in Jan 2013 per [TH05 Recall Notice](http://forum.techinferno.com/diy-e-gpu-projects/2680-th05-recall-notice.html#post36363).
+- [**$70 BPlus PE4L V2.1**](http://www.hwtools.net/Adapter/PE4L%20V2.1.html) ExpressCard to PCI-Express adapter. You want the PE4L-EC060A package that includes the SWEX adapter to power on your power supply. If wanting a neater enclosure solution then purchase a [$170 BPlus PE4H V3.2](http://www.hwtools.net/Adapter/PE4H%20V3.2.html) instead, noting that your chosen video card will require the pci-e power connectors on the side of the card rather than the top. If you're curious, BPlus used to offer a [US$180 TH05](http://www.mediafire.com/download/3xg6ie3gja1ijv7/TH05_brief.pdf) (which included the TB cable), which was a direct Thunderbolt to PCI-Express, but Intel shut it down and the entire BPlus Thunderbolt division in Jan 2013 per [TH05 Recall Notice](https://www.techinferno.com/index.php?/forums/topic/2097-th05-recall-notice/).
 
-- [**A Thunderbolt cable**](http://www.amazon.com/Apple-MD861ZM-Thunderbolt-Cable-VERSION/dp/B00B3Y4FAS). You can get this at any Apple Store or online. I'd recommend getting a 2m cable since you'll probably want to have your GPU not directly beside your laptop.
+- [**A Thunderbolt cable**](https://www.amazon.com/Apple-MD861ZM-Thunderbolt-Cable-VERSION/dp/B00B3Y4FAS). You can get this at any Apple Store or online. I'd recommend getting a 2m cable since you'll probably want to have your GPU not directly beside your laptop.
 
-- **450W power supply** capable of running the video card. [$24AR-shipped Diablotek PH450](http://www.newegg.com/Product/Product.aspx?Item=N82E16817822002) offers 12V/30A (360W) or [Corsair CX430](http://www.newegg.com/Product/Product.aspx?Item=N82E16817139026) offers 12V/32A (384W) of peak power, enough for ALL current video cards. If getting a basic ATX PSU then carefully read the first rail data on it, eg: 12V1:18A means 12*18=216W of peak power. That wouldn't be enough to drive my GTX570 that can [draw up to 298W peak power](http://www.techpowerup.com/reviews/ASUS/GeForce_GTX_570/25.html). Look at your video card's spec sheet to see the peak wattage only it uses (not the suggested value that often includes motherboard + hard drives, etc). Honestly though, I'd recommend going for the 450W or even 500W power supplies available for around $20 at your local money-laundering stolen-stuff electronics store. If you get a power supply that doesn't output enough or doesn't like power spikes, it'll basically make your computer blue screen a lot mid-gaming. Ask me how I know.
+- **450W power supply** capable of running the video card. [$24AR-shipped Diablotek PH450](http://www.newegg.com/Product/Product.aspx?Item=N82E16817822002) offers 12V/30A (360W) or [Corsair CX430](http://www.newegg.com/Product/Product.aspx?Item=N82E16817139026) offers 12V/32A (384W) of peak power, enough for ALL current video cards. If getting a basic ATX PSU then carefully read the first rail data on it, eg: 12V1:18A means 12*18=216W of peak power. That wouldn't be enough to drive my GTX570 that can [draw up to 298W peak power](https://www.techpowerup.com/reviews/ASUS/GeForce_GTX_570/25.html). Look at your video card's spec sheet to see the peak wattage only it uses (not the suggested value that often includes motherboard + hard drives, etc). Honestly though, I'd recommend going for the 450W or even 500W power supplies available for around $20 at your local money-laundering stolen-stuff electronics store. If you get a power supply that doesn't output enough or doesn't like power spikes, it'll basically make your computer blue screen a lot mid-gaming. Ask me how I know.
 
-- [**$25 DIY eGPU Setup 1.X**](http://forum.techinferno.com/diy-e-gpu-projects/2123-diy-egpu-setup-1-x.html#post27337), developed by nando. Yes, you're paying for software, get over it. Nando did spectacular work to get Windows 7 Bootcamp to be able to properly accept the external videocard without giving an "Error 12" code. You want the latest 1.20 version incorporating new Macbook features that's not advertised on that linked page as yet.
+- [**$25 DIY eGPU Setup 1.X**](https://egpu.io/diy-egpu-setup-1-30-nando4/), developed by nando. Yes, you're paying for software, get over it. Nando did spectacular work to get Windows 7 Bootcamp to be able to properly accept the external videocard without giving an "Error 12" code. You want the latest 1.20 version incorporating new Macbook features that's not advertised on that linked page as yet.
 
-- **A video card**. I have the NVidia GTX 570, which is an awesome balance of great performance and price. You can use basically any video card you want, including AMD ones. Note on AMD cards, internal LCD rendering won't be possible without using something like [Lucidlogix Virtu](http://www.lucidlogix.com/) (not covered in this article). Also, don't go too crazy and order a NVidia Titan. Yes it's a great card, but you won't see the value for money since you are limited to a slower PCI bus. I'd recommend sticking in the 5xx or 6xx series of NVidia GTX cards.
+- **A video card**. I have the NVidia GTX 570, which is an awesome balance of great performance and price. You can use basically any video card you want, including AMD ones. Note on AMD cards, internal LCD rendering won't be possible without using something like [Lucidlogix Virtu](http://lucidlogix.com/) (not covered in this article). Also, don't go too crazy and order a NVidia Titan. Yes it's a great card, but you won't see the value for money since you are limited to a slower PCI bus. I'd recommend sticking in the 5xx or 6xx series of NVidia GTX cards.
 
 - **2013 11" Macbook Air**. This is the laptop I have, but these instructions should be identical for the 13" Air. Additionally, the only step that will be different for every other kind of Macbook is the contents of the PCI.BAT file later.
 
@@ -60,13 +60,13 @@ Alright, lets get started!
 
 1. On your mac use Boot Camp Assistant to prep a USB key with Windows 7 64-bit
 
-2. Still with Boot Camp Assistant, partition your main drive and start the Windows 7 installation process. I recommend around at least a 60GB partition. Games are big these days. If you just don't have the space, you can do what I do and [turn off Hibernation Mode](http://www.howtogeek.com/howto/7564/how-to-manage-hibernate-mode-in-windows-7/) and the [Virtual Memory Page File](http://windows.microsoft.com/en-US/windows-vista/Change-the-size-of-virtual-memory) to save hard drive space (about 17GB together). Disabling Virtual Memory is kind of a bad idea, but I've never had troubles doing it -- this laptop's 8GB of ram is usually enough for anything.
+2. Still with Boot Camp Assistant, partition your main drive and start the Windows 7 installation process. I recommend around at least a 60GB partition. Games are big these days. If you just don't have the space, you can do what I do and [turn off Hibernation Mode](http://www.howtogeek.com/howto/7564/how-to-manage-hibernate-mode-in-windows-7/) and the [Virtual Memory Page File](http://www.trishtech.com/2014/11/disable-virtual-memory-in-windows-10/) to save hard drive space (about 17GB together). Disabling Virtual Memory is kind of a bad idea, but I've never had troubles doing it -- this laptop's 8GB of ram is usually enough for anything.
 
 3. Once partitioning is done, your computer will auto reboot and the Windows 7 installer will start. Install Windows 7.
 
 4. The Windows 7 installer will install the Boot Camp drivers at the end of it.
 
-5. Go to Intel's site and download the latest [Intel HD 5000 drivers](https://downloadcenter.intel.com/SearchResult.aspx?lang=eng&ProductFamily=Graphics&ProductLine=Laptop+graphics+drivers&ProductProduct=4th+Generation+Intel%C2%AE+Core%E2%84%A2+Processors+with+Intel%C2%AE+HD+Graphics+5000&ProdId=3721&LineId=1101&FamilyId=39) for Windows 7 64-bit. It's the same download for the HD 4000 drivers.
+5. Go to Intel's site and download the latest [Intel HD 5000 drivers](https://downloadcenter.intel.com/product/81495) for Windows 7 64-bit. It's the same download for the HD 4000 drivers.
 
 6. Launch Windows Update and apply all required/optional patches. Reboot as required. Repeat this step until nothing’s left. This will take a long time, deal with it.
 
@@ -108,9 +108,9 @@ Alright, lets get started!
 
 3. Mount the virtual disk image by running `e:\eGPU\eGPU-Setup-mount.bat` in Administrator mode. This will mount a V: drive.
 
-4. In notepad, create the file `V:\config\pci.bat` and paste the following into it. Note that this is the file that changes depending on your Macbook type. If you dont have a 2013 Macbook Air, a couple addresses might change. Post in this thread and hopefully someone will post your config. 
+4. In notepad, create the file `V:\config\pci.bat` and paste the following into it. Note that this is the file that changes depending on your Macbook type. If you dont have a 2013 Macbook Air, a couple addresses might change. Post in this thread and hopefully someone will post your config.
 
-        :: TB TH05 uses 9:0.0 bridge, Sonnet/OWC uses 9:3.0. That 9:3.0 line may need 
+        :: TB TH05 uses 9:0.0 bridge, Sonnet/OWC uses 9:3.0. That 9:3.0 line may need
         :: to be altered depending on what TB enclosure/adapter you use.
         ::
         :: Disable CMD, set PCIe config space
@@ -130,7 +130,7 @@ Alright, lets get started!
         @echo -s 0:1c.4 COMMAND=7 -s 5:0.0 COMMAND=7 -s 6:3.0 COMMAND=7 -s 6:4.0 COMMAND=7 >> setpci.arg
         @echo -s 7:00.0 COMMAND=6 -s 8:0.0 COMMAND=7 -s 9:3.0 COMMAND=7 >> setpci.arg
         @echo -s a:00.0 COMMAND=6 -s a:0.1 COMMAND=6 >> setpci.arg
-        setpci @setpci.arg          
+        setpci @setpci.arg
 
 5. In notepad, edit the file `V:\config\startup.bat` and paste the following into it:
 
@@ -160,7 +160,7 @@ Alright, lets get started!
 
 ### Install Notes
 
-- Again, for AMD cards to render on the Internal LCD, you’ll need to use Virtu. See [Lucidlogix Virtu : internal LCD mode for AMD eGPUs](http://forum.techinferno.com/diy-e-gpu-projects/2967-lucidlogix-virtu-internal-lcd-mode-amd-egpus.html#post41056) for instructions on how to get this to work.
+- Again, for AMD cards to render on the Internal LCD, you’ll need to use Lucidlogix Virtu.
 
 - When doing Internal LCD mode (which you’re doing when you have no monitor plugged into the video card), PhysX might not be on. Open the NVidia control panel and switch it from CPU to Auto. When doing benchmarks, keep it on CPU though.
 

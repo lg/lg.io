@@ -10,7 +10,7 @@ last_modified_at: "2016-07-24"
 <sub><sup>**Updated Apr 3, 2016:** Added dynamic DNS instructions for iwantmyname</sup></sub><br/>
 <sub><sup>**Updated Jul 24, 2016:** Added NAT-PMP for UPnP, up-to-date dynamic DNS methods, IPv6 instructions, and EdgeRouter-X mention</sup></sub>
 
-I've gotten a new, inexplicable, love for [Ubiquiti](http://ubnt.com). They fit in my favorite category of companies: they make high quality products that cost nothing compared to the old-boys-club equivalents. Oh and these products look spectacular. I'm actually quite surprised how UBNT is able to do all the things they do... I couldn't support them more.
+I've gotten a new, inexplicable, love for [Ubiquiti](http://www.ubnt.com). They fit in my favorite category of companies: they make high quality products that cost nothing compared to the old-boys-club equivalents. Oh and these products look spectacular. I'm actually quite surprised how UBNT is able to do all the things they do... I couldn't support them more.
 
 After finding out about them from [MonkeyBrains](https://twitter.com/monkeybrainsnet), I looked through their product line to be quite surprised at the feature sets, yet still low cost. Being a huge fan of networking equipment, I decided to buy their cheapest router (at the time), the EdgeMAX EdgeRouter Lite. A 3 port, gigabit-capable router, that can really only be configured by commandline. Today, they have an even cheaper version of it, for $50! The [EdgeRouter-X](https://www.ubnt.com/edgemax/edgerouter-x/).
 
@@ -22,7 +22,7 @@ For this article, we're going to configure the EdgeRouter Lite for home-use. Ins
 
 ### Getting going
 
-First off, like I mentioned, this thing is only _really_ configurable via commandline. It uses a forked version of the opensourced edition of [Vyatta](https://en.wikipedia.org/wiki/Vyatta) 6.3 (now maintained as [VyOS](http://vyos.net/wiki/Main_Page) post their acquisition by Brocade). So to learn about how this thing works, you'll need to read pages upon pages of documentation from the [old Vyatta docs](https://dl.networklinx.com/vyatta/6.3/) keeping in mind the Ubnt has modified a bunch of stuff too. A lot of help is available on their [community page](http://community.ubnt.com/t5/EdgeMAX/bd-p/EdgeMAX). Oddly enough, they don't document anything they do, so you're stuck reading release notes and harassing the employees that troll the forums.
+First off, like I mentioned, this thing is only _really_ configurable via commandline. It uses a forked version of the opensourced edition of [Vyatta](https://en.wikipedia.org/wiki/Vyatta) 6.3 (now maintained as [VyOS](http://wiki.vyos.net/wiki/Main_Page) post their acquisition by Brocade). So to learn about how this thing works, you'll need to read pages upon pages of documentation from the [old Vyatta docs](https://dl.networklinx.com/vyatta/6.3/) keeping in mind the Ubnt has modified a bunch of stuff too. A lot of help is available on their [community page](http://community.ubnt.com/t5/EdgeMAX/bd-p/EdgeMAX). Oddly enough, they don't document anything they do, so you're stuck reading release notes and harassing the employees that troll the forums.
 
 A great way to get started is to read the [EdgeOS CLI Primer](http://community.ubnt.com/t5/EdgeMAX/EdgeOS-CLI-Primer-part-1/m-p/285388#U285388) and the [Basic System](https://dl.networklinx.com/vyatta/6.3/Vyatta_BasicSystem_R6.3_v01.pdf) [PDF] docs.
 
@@ -32,7 +32,7 @@ Log in via SSH with `ubnt`/`ubnt`.
 
 ### Port forwarding
 
-As of 1.4, Ubiquiti added the non-Vayatta config of `port-forward`. Whereas in the past you'd need to manually create NAT mappings and firewall rules (as per [here](http://wiki.ubnt.com/EdgeMAX_PortForward)), the EdgeRouter now has made it significantly easier with even automatic firewall rules.
+As of 1.4, Ubiquiti added the non-Vayatta config of `port-forward`. Whereas in the past you'd need to manually create NAT mappings and firewall rules (as per [here](https://help.ubnt.com/hc/en-us/categories/200321064-EdgeMAX)), the EdgeRouter now has made it significantly easier with even automatic firewall rules.
 
     port-forward {
       auto-firewall enable
@@ -63,7 +63,7 @@ As a reminder, to actually set settings on the router, switch to configuration m
 
 In this example, we have the WAN on eth0 and LAN on eth1. We enable `auto-firewall` which really makes our life easy by dealing with firewall rules for LAN targets (more on that later). `hairpin-nat` makes it so that if an app on your LAN uses your public IP address as the remote host, the router will turn the packet right around without going out to your ISP.
 
-There are two rules, `rule 1` which we have exposed the [Synology DiskStation Manager WebUI](https://www.synology.com/en-us/dsm/5.1/features) (great device btw) to the outside. Connections from TCP port 9876 on our WAN interface will be forwarded to 192.168.0.10 on port 5000. Firewall rules will automatically be created to allow incoming connections to the LAN for this port because of the `auto-firewall` instruction.
+There are two rules, `rule 1` which we have exposed the [Synology DiskStation Manager WebUI](https://www.synology.com/en-us/dsm/6.0/features) (great device btw) to the outside. Connections from TCP port 9876 on our WAN interface will be forwarded to 192.168.0.10 on port 5000. Firewall rules will automatically be created to allow incoming connections to the LAN for this port because of the `auto-firewall` instruction.
 
 `rule 2` allows me to access the router's SSH for config from the outside. Same deal as `rule 1` except unfortunately when routing to the router itself, it appeared as though I needed to create the firewall rule manually.
 

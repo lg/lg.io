@@ -20,11 +20,11 @@ no tables
 
 That’s odd, we had tables that we created earlier in Beeswax for testing. Where were they? It turns out that Beeswax uses a different metastore than the ‘hive’ CLI utility. What’s even worse is that the two can’t even use the same file (its a Derby db, yay Apache-lockin!). Looking at documentation for this shows that we’ll need to set up MySQL for access. Ok. Off to google.
 
-Here’s an article that tells us how to set it up: [http://www.mazsoft.com/blog/post/2010/02/01/Setting-up-HadoopHive-to-use-MySQL-as-metastore.aspx](http://www.mazsoft.com/blog/post/2010/02/01/Setting-up-HadoopHive-to-use-MySQL-as-metastore.aspx)
+Here’s an article that tells us how to set it up: [http://www.mazsoft.com/blog/post/2010/02/01/Setting-up-HadoopHive-to-use-MySQL-as-metastore](http://www.mazsoft.com/blog/post/2010/02/01/Setting-up-HadoopHive-to-use-MySQL-as-metastore)
 
 Note that the author in that article uses /hadoop as his hadoop root. Our config was in /etc/hive/conf/. Oh also, make sure you mysql server starts at startup, his instructions don’t do that.
 
-Great! All done, right? Kind of. 
+Great! All done, right? Kind of.
 
 First off, being the impatient freak that I am, I completely ignored the need to install MySQL JDBC drivers. Oddly enough they’re not even “yum install”-able, so you’ll need to get them from the site listed in that article.
 

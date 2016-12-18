@@ -232,7 +232,7 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 
 	![](/assets/azure-overwatch/teredo.png){:width="745"}
 
-1. For Steam In-Home Streaming to work properly, you'll need to set up a VPN. I strongly recommend [ZeroTier](https://zerotier.com) for this since it's the best at ensuring a peer-to-peer connection between the machines and not re-routing through some other server who knows where. Oh and don't worry, for what you'll be using it for, it's free. They're also a super ethical company and opensource large amounts of their core software.
+1. For Steam In-Home Streaming to work properly, you'll need to set up a VPN. I strongly recommend [ZeroTier](https://www.zerotier.com/) for this since it's the best at ensuring a peer-to-peer connection between the machines and not re-routing through some other server who knows where. Oh and don't worry, for what you'll be using it for, it's free. They're also a super ethical company and opensource large amounts of their core software.
 	- So, go to [Zerotier's website](https://zerotier.com) and create an account there and create a network
 	- When configuring the network, there are a few settings necessary:
 		- I'd recommend setting 'Access Control' to 'None'. It makes configuration easier, just don't distribute the network id.

@@ -79,7 +79,7 @@ Problem is, you're using a self-signed certificate, so your web browser will com
 
 ### Part C: Generating the signed certificate with Lets Encrypt
 
-Lets install Lets Encrypt now. Reminder that this needs to be done on this server, not your local machine. We'll be using [certbot](https://certbot.eff.org) and essentially the [instructions](https://certbot.eff.org/#ubuntutrusty-other) there.
+Lets install Lets Encrypt now. Reminder that this needs to be done on this server, not your local machine. We'll be using [certbot](https://certbot.eff.org) and essentially the [instructions](https://certbot.eff.org#ubuntutrusty-other) there.
 
 	wget https://dl.eff.org/certbot-auto
 	chmod a+x certbot-auto
