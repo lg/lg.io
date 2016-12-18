@@ -50,7 +50,7 @@ You're looking at **$0.53/hr** to play games this way. Not too bad. That's aroun
 1. Download and install version 347.88 of the [GeForce GTX TITAN X driver package](http://www.geforce.com/drivers/results/83080) for Windows 8.1. Only the GeForce package contains the latest drivers for the GRID cards. If you get an error when installing the drivers that says it couldn't detect a GeForce card, you're not in Remote Desktop as an `admin session`. Reboot when asked. Note that the latest version of the drivers sometimes cause Windows not to be able to restart.
 ![Geforce Titan for Windows 8.1 64-bit](/assets/geforcetitan.png)
 
-1. The GRID cards have an optimization Steam can use which can offload the H.264 video encoding to the GPU. We need to enable this though. Sign up for a developer account with NVidia and download and extract the [GRID SDK](https://developer.nvidia.com/grid-app-game-streaming). In the `bin` directory run the following (using a Command Prompt): `NvFBCEnable.exe -enable -noreset`. Reboot again.
+1. The GRID cards have an optimization Steam can use which can offload the H.264 video encoding to the GPU. We need to enable this though. Download NvFBCEnable from [here](/assets/NvFBCEnable.zip) and run the following (using a Command Prompt): `NvFBCEnable.exe -enable -noreset`. Reboot again.
 
 1. In order to make games actually use the video card, you'll need to completely remove the default display driver. Open up Device Manager, and a) disable the `Microsoft Basic Display Adapter`, b) uninstall it and c) run the following in a Command Prompt. Run each command undividually. Reboot afterwards.
 
