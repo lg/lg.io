@@ -4,7 +4,7 @@ title: "Real-world benchmarking of cloud storage providers: Amazon S3, Google Cl
 categories: []
 tags: []
 published: True
-
+last_modified_at: "2016-12-10"
 ---
 
 <img src="/assets/no-more-dropbox-plz.png" style="width: 584px;" /><br/>
@@ -28,7 +28,7 @@ _I would have wanted to also test Backblaze's B2 thingy, but I haven't been invi
 
 For all three services I want to test 3 real-world things:
 
-  1. **Large file**: I created a 100mb file using `mkfile 100m ~/Desktop/100m`. 
+  1. **Large file**: I created a 100mb file using `mkfile 100m ~/Desktop/100m`.
   2. **Small files**: I found a git repo on my machine and copied the `.git` directory.
   3. **Many instructions**: After the above git directory was synced, I removed all the files from the cloud provider.
 

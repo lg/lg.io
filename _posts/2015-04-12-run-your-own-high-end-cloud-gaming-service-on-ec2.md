@@ -4,7 +4,7 @@ title: Run your own high-end cloud gaming service on EC2
 categories: []
 tags: []
 published: True
-
+last_modified_at: "2015-05-07"
 ---
 
 **NOTE: This article has been superseded by my more recent one [here]({% post_url 2015-07-05-revised-and-much-faster-run-your-own-highend-cloud-gaming-service-on-ec2 %})**
@@ -71,7 +71,7 @@ One other thing you should do is hit F8 while playing (note that sometimes this 
 
     "AvgPingMS"       "11.066625595092773"
 
-    "AvgCaptureMS"    "4.555628776550293"  
+    "AvgCaptureMS"    "4.555628776550293"
     "AvgConvertMS"    "0.023172963410615921"
     "AvgEncodeMS"     "5.5545558929443359"
     "AvgNetworkMS"    "7.0888233184814453"

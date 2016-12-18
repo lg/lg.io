@@ -4,6 +4,7 @@ title: "Using Lets Encrypt to secure cloud-hosted services like Ubiquiti's mFi, 
 categories: []
 tags: []
 published: True
+last_modified_at: "2016-07-31"
 ---
 <sub><sup>**Updated Jul 31, 2016:** Moved away from letsencrypt-auto and switched to certbot, updated the auto-renewal script, and changed the suggested cron time to weekly. Also made mention that mFi series has been discontinued. Finally, fixed the install instructions for Unifi Video.</sup></sub><br/>
 

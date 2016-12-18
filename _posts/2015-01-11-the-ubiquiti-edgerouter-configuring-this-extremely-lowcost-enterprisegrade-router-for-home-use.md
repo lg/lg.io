@@ -4,6 +4,7 @@ title: "The Ubiquiti EdgeRouter: Configuring this extremely low-cost, enterprise
 categories: []
 tags: []
 published: True
+last_modified_at: "2016-07-24"
 ---
 <sub><sup>**Updated Jan 17, 2015:** Moved the dynamic DNS away from a scheduled task to the new custom- service method</sup></sub><br/>
 <sub><sup>**Updated Apr 3, 2016:** Added dynamic DNS instructions for iwantmyname</sup></sub><br/>
@@ -64,7 +65,7 @@ In this example, we have the WAN on eth0 and LAN on eth1. We enable `auto-firewa
 
 There are two rules, `rule 1` which we have exposed the [Synology DiskStation Manager WebUI](https://www.synology.com/en-us/dsm/5.1/features) (great device btw) to the outside. Connections from TCP port 9876 on our WAN interface will be forwarded to 192.168.0.10 on port 5000. Firewall rules will automatically be created to allow incoming connections to the LAN for this port because of the `auto-firewall` instruction.
 
-`rule 2` allows me to access the router's SSH for config from the outside. Same deal as `rule 1` except unfortunately when routing to the router itself, it appeared as though I needed to create the firewall rule manually. 
+`rule 2` allows me to access the router's SSH for config from the outside. Same deal as `rule 1` except unfortunately when routing to the router itself, it appeared as though I needed to create the firewall rule manually.
 
     firewall {
       name WAN_LOCAL {
@@ -116,7 +117,7 @@ It's mostly obvious what this does though the `hostfile-update enable` section i
 
 ### Enable UPnP
 
-There are security problems with UPnP in general, but because of stuff like BitTorrent, World of Warcraft and many other applications, we need it to be easy to open ports for faster peer-to-peer. 
+There are security problems with UPnP in general, but because of stuff like BitTorrent, World of Warcraft and many other applications, we need it to be easy to open ports for faster peer-to-peer.
 
     service {
       upnp2 {
@@ -254,8 +255,8 @@ Oh and don't forget to assign the IPv6 firewall rules to the internet interface:
           [...]
         }
         out {
-          ipv6-name IPv6_WAN_LOCAL 
-          [...] 
+          ipv6-name IPv6_WAN_LOCAL
+          [...]
         }
       }
     }
@@ -336,7 +337,7 @@ The way we can modify packets to go through a different interface is to use the 
         }
       }
     }
-    
+
 `table 1` is just a static routes table. By using `0.0.0.0/0` we're basically matching everything on this routing table to go to the VPN. What's neat here is the `interface-route` and `next-hop-interface` which makes it much easier to specify which tunnel to take, even when you could be assigned a dynamic ip.
 
 Finally, data has been sent out through the VPN now, but we need to be able to receive data back too. For that, much like on the WAN, we need to masquerade NAT:
@@ -357,4 +358,3 @@ And that's it! Now everything from 192.168.0.250 will always be tunneled through
 ### That's all!
 
 I love this router. The policy-based routing example above only begins to scratch the surface of how powerful it can really be. Yes, it's complicated to set up, but it's not that bad. The config is straightforward, there's just a bunch of it. Ubiquiti is working to make this stuff configurable via the Web UI, but for now I'll take advantage of its complexity for my own exclusive club of awesomeness.
- 
