@@ -4,12 +4,15 @@ title: "Cloudy Gamer: Playing Overwatch on Azure's new monster GPU instances"
 categories: []
 tags: []
 published: True
+last_modified_at: "2016-12-17"
 ---
+
+<sub><sup>**Updated Dec 17, 2016:** Removed mention of the Azure Preview (since it's now GA), linked to easier method to disable monitors, updated driver link</sup></sub><br/>
 
 [![](/assets/azure-overwatch/azure-game-streaming-thumb.jpg)](/assets/azure-overwatch/azure-game-streaming.png)<br/>
 <sub><sup>**Playing Overwatch at 60FPS, 2560x1600, everything on Epic quality, and streaming from the cloud -- not too shabby!**</sup></sub>
 
-It's no secret that I love the concept of not just streaming AAA game titles from the cloud, but *playing* them live from any computer -- especially on the underpowered laptops I usually use for work. I've done it before using Amazon's EC2 (and written [a full article]({% post_url 2015-07-05-revised-and-much-faster-run-your-own-highend-cloud-gaming-service-on-ec2 %}) for how to do it), but this time, things are a little different. [Microsoft's Azure is first](https://azure.microsoft.com/en-us/blog/azure-n-series-preview-availability/) to give access to NVIDIA's new M60 GPUs, completely new beasts that really set a whole new bar for framerate and image quality. They're based on the newer [Maxwell architecture](https://developer.nvidia.com/maxwell-compute-architecture), versus the [Kepler](http://www.nvidia.com/object/nvidia-kepler.html) cards we've used in the past. Hopefully one day we'll get the fancy new [Pascal](http://www.nvidia.com/object/gpu-architecture.html) cards :)
+It's no secret that I love the concept of not just streaming AAA game titles from the cloud, but *playing* them live from any computer -- especially on the underpowered laptops I usually use for work. I've done it before using Amazon's EC2 (and written [a full article]({% post_url 2015-07-05-revised-and-much-faster-run-your-own-highend-cloud-gaming-service-on-ec2 %}) for how to do it), but this time, things are a little different. [Microsoft's Azure was first](https://azure.microsoft.com/en-us/blog/azure-n-series-preview-availability/) to give access to NVIDIA's new M60 GPUs, completely new beasts that really set a whole new bar for framerate and image quality. They're based on the newer [Maxwell architecture](https://developer.nvidia.com/maxwell-compute-architecture), versus the [Kepler](http://www.nvidia.com/object/nvidia-kepler.html) cards we've used in the past. Hopefully one day we'll get the fancy new [Pascal](http://www.nvidia.com/object/gpu-architecture.html) cards :)
 
 Before going through this article, I strongly recommend you at least skim my [EC2 Gaming article]({% post_url 2015-07-05-revised-and-much-faster-run-your-own-highend-cloud-gaming-service-on-ec2 %}) from before so you can grasp some of the concepts we'll be doing here. Basically it'll come down to this: we're going to launch an [Azure GPU instance](https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/#n-series), configure it for ultra-low latency streaming, and actually properly play [Overwatch](https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/#n-series), a first-person shooter, from a server [over a thousand miles away](http://www.gcmap.com/mapui?P=SFO-HOU)!
 
@@ -21,32 +24,25 @@ If you have troubles, check out the [CloudyGamer subreddit](https://www.reddit.c
 
 ### Costs
 
-It's not the cheapest thing out there, but if you'll just be playing here and there it can be. Like in the past, the majority of the bill will probably come from bandwidth usage from the server (especially if youre doing 30+ MBit/s). Note that this is NV6 beta pricing -- it may change when it becomes generally available. I'll try to update the article then. Either way, remember, there's $0 upfront cost here. This contrasts dramatically to the thousands of dollars you'd end up paying for a similarly spec-ed gaming rig.
+It's not the cheapest thing out there, but if you'll just be playing here and there it can be. Like in the past, the majority of the bill will probably come from bandwidth usage from the server (especially if youre doing 30+ MBit/s). Also remember, there's $0 upfront cost here. This contrasts dramatically to the thousands of dollars you'd end up paying for a similarly spec-ed gaming rig.
 
-- NV6 Server: $0.73/hr
+- NV6 Server: $1.35/hr
 - Bandwidth at 10MBit/s: $0.41/hr
 - HD storage: $0.003/hr
 
-**Total at 10MBit/s: $1.14/hr**<br/>
-**Total at 30Mbit/s: $1.96/hr** (recommended tho)
-
-### Requesting access
-
-As the Azure GPU machines are still in Preview, **you'll need to request access** to them [here](http://gpu.azure.com). Unfortunately, this also means you need to wait until you're invited, though I've been told the wait times are getting shorter and shorter (still around a week or two right now).
-
-Meanwhile, I suggest watching this quick video I made, plus skim the instructions. That and start saving those pennies!
+**Total at 10MBit/s: $1.76/hr**<br/>
+**Total at 30Mbit/s: $2.58/hr** (recommended tho)
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/jeapeI_Kp28" frameborder="0" allowfullscreen></iframe><sub><sup>**Note: playing via the cloud doesn't make you suck any less at gaming ;)**</sup></sub>
 <br/>
 
 ### Part 1: Creating the Azure instance
 
-1. Once you get the email that you're in, go to the Azure portal and use the following instructions to create a new NV6 type machine (has NVIDIA's new M60 GPU). The K80 machines won't work for this since they don't virtualize the display adapter we need.
+1. Go to the Azure portal and use the following instructions to create a new NV6 type machine (has NVIDIA's M60 GPU). The K80 machines won't work for this since they don't virtualize the display adapter we need.
 	1. Enter the Azure Portal
 	1. On the left side select 'Virtual machines' and click 'Add'
   <br/>![](/assets/azure-overwatch/virtual-machine-listing.png){:width="608"}
-	2. Select 'Windows Server' then 'Windows Server 2016 Technical Preview 5'
-	<br/>![](/assets/azure-overwatch/windows-server-20160r5.png){:width="416"}
+	2. Select 'Windows Server' then 'Windows Server 2016 Datacenter'
 	3. When prompted for the deployment model, select 'Resource Manager' from the dropdown and click the 'Create' button
 	4. Enter a name and some credentials for the machine. Make sure though that the 'VM disk type' is 'HDD' and the Location is 'South Central US' (this is the only location they support right now)
 	<br/>![](/assets/azure-overwatch/sample-machine-config.png){:width="485"}
@@ -174,7 +170,7 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 1. You'll notice that if you pull up the Device Manager that the driver will be missing for the M60 video card.
 <br/>![](/assets/azure-overwatch/no-nvidia-driver.png){:width="394"}
 
-1. Get the proper driver from [here](https://azuregpu.blob.core.windows.net/nv-drivers/362.56_grid_win10_64bit_english.exe). It's a custom build for Azure right now, so using NVIDIA's site driver may not work. The version as of writing this is at 362.56. You may be able to find a more recent one mentioned on the [Azure forum](https://social.msdn.microsoft.com/Forums/azure/en-US/home?forum=AzureGPU).
+1. Get the latest NVIDIA Tesla M60 drivers from [here](http://www.nvidia.com/download/index.aspx). Sometimes there are other versions of the drivers mentioned on [Azure forum](https://social.msdn.microsoft.com/Forums/azure/en-US/home?forum=AzureGPU), so go there if you have incompatibility problems.
 
 1. Do the regular Express install and reboot when completed.
 <br/>![](/assets/azure-overwatch/driver-install-done.png){:width="812"}
@@ -193,20 +189,7 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 	<br/>![](/assets/azure-overwatch/run-as-admin.png){:width="391"}
 	- In the next step and going forward, we'll be using this link when needing to log out of Remote Desktop but keep the unlocked desktop available for other applications
 
-1. Ok this is a weird one. You'll need to install TightVNC from the internet so you can configure the monitors properly. Depending on the Azure machine type you selected and the amount of graphics cards, you'll need to disable things.
-	- Download TightVNC 64-bit from [here](http://www.tightvnc.com/download.php).
-	- Install it and set some passwords.
-	- Once completed, right click on the new system tray icon, select 'Configuration...', and 'Set...' by 'Primary password' and type in a **secure** password. Remember that your machine is open to the world and people most certainly do port scan looking around for machines like yours to play with. Secure passwords are key.
-	<br/>![](/assets/azure-overwatch/tightvnc-config.png){:width="485"}
-	- Now run the Disconnect shortcut you created earlier. It'll disconnect your session.
-	- On your Mac in Finder, select the Go menu and select 'Connect to Server' and type in 'vnc://<your_server_ip_address' and connect. (or do similar instructions for another VNC client)
-	- Depending on the amount of adapters your machine has, this may be a giant window. Resize it so you can see everything.
-	- Right click on the main desktop and select 'Display Settings'
-	- Under 'Multiple displays', select 'Show only on 1' and click 'Apply'
-	<br/>[![](/assets/azure-overwatch/show-only-on-1-thumb.jpg){:width="717"}](/assets/azure-overwatch/show-only-on-1.png)
-	- Select 'Keep Settings' and you're done here. You can disconnect from the VNC server.
-	- Go back in Remote Desktop and you can now uninstall TightVNC. This is the only configuration change that needs to be done this way.
-	- **HELP REQUESTED:** Is there a better way of doing this without needing to use TightVNC?
+1. As this video card introduces possibility of another monitor being attached to the server, some games will get confused which one to use. Follow the instructions on [this post](https://www.reddit.com/r/cloudygamer/comments/5hmzv5/azure_nv6_using_libx264_instead_of_nvenc/db1xje8/) (thanks [/r/openstack](https://www.reddit.com/user/openstack)!) to disable all monitors but the NVIDIA one.
 
 ### Part 3: Audio
 
@@ -275,7 +258,7 @@ Meanwhile, I suggest watching this quick video I made, plus skim the instruction
 			- 'Enable hardware encoding'
 			- 'Enable hardware encoding on NVIDIA GPU'
 			- 'Prioritize network traffic'
-			- Note that everything else should be unchecked. I've messed with NvFBC, but what Steam does for full-screen capture seems to be superior. Of course, you can mess with it later if you're trying to debug a game. If you try to use NvFBC, please see my [previous EC2 Gaming article]({% post_url 2015-07-05-revised-and-much-faster-run-your-own-highend-cloud-gaming-service-on-ec2 %}) for instructions on how to get that set up (you need to run a tool).
+			- Note that everything else should be unchecked. I've messed with NvFBC, but what Steam does for full-screen capture seems to be superior (most of the time). Of course, you can mess with it later if you're trying to debug a game. If you try to use NvFBC, please see my [previous EC2 Gaming article]({% post_url 2015-07-05-revised-and-much-faster-run-your-own-highend-cloud-gaming-service-on-ec2 %}) for instructions on how to get that set up (you need to run NVFBCEnable).
 			<br/>![](/assets/azure-overwatch/steam-streaming-server.png){:width="444"}
 		- Interface > Favorite window > Library
 		- Interface > Notify me about additions or changes [...], *uncheck* it
