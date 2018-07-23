@@ -20,8 +20,6 @@ And yes, it seems I always need to repeat myself when writing these articles: th
 
 Note that in this article I assume you're on a computer similar to mine (a Macbook laptop running MacOS). That's not a requirement to do this stuff though. You could be on Linux or Windows as a client, though some of the client-side tooling changes around a bit. You'll figure it out!
 
-If you have troubles, check out the [CloudyGamer subreddit](https://www.reddit.com/r/cloudygamer), I'm hoping to amass a good amount of knowledge around gaming in the cloud there.
-
 ### Costs
 
 It's not the cheapest thing out there, but if you'll just be playing here and there it can be. Like in the past, the majority of the bill will probably come from bandwidth usage from the server (especially if youre doing 30+ MBit/s). Also remember, there's $0 upfront cost here. This contrasts dramatically to the thousands of dollars you'd end up paying for a similarly spec-ed gaming rig.
@@ -323,8 +321,6 @@ It's not the cheapest thing out there, but if you'll just be playing here and th
 
 <br/>![](/assets/azure-overwatch/steam-fps.png)<br/>
 <sub><sup>**Steam's non-In-Home-Streaming FPS counter (top-right of screen)**</sup></sub>
-
-If you have troubles, please check out the [CloudyGamer subreddit](https://www.reddit.com/r/cloudygamer) -- hopefully we can simplify this process and make things easier and faster!
 
 Thanks for reading! Hopefully this helps out. My day-to-day job is at [Envoy](https://envoy.com), a startup in San Francisco building pretty cool products for rethinking typically outdated processes in the workplace. We're hiring fun engineers with a passion for building re-thought tech. Check out our [jobs page](https://envoy.com/jobs/)! And definitely mention if you're into streaming games :)
 
