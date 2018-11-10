@@ -9,7 +9,7 @@ social:
   links:
     - https://twitter.com/lg
 baseurl: "" # the subpath of your site, e.g. /blog/
-url: "http://lg.io" # the base hostname & protocol for your site
+url: "https://lg.io" # the base hostname & protocol for your site
 twitter_username: lg
 github_username: lg
 highlighter: rouge
