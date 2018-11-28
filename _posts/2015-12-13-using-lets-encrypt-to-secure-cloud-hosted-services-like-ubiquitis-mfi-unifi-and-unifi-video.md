@@ -4,8 +4,9 @@ title: "Using Lets Encrypt to secure cloud-hosted services like Ubiquiti's mFi, 
 categories: []
 tags: []
 published: True
-last_modified_at: "2016-07-31"
+last_modified_at: "2018-11-27"
 ---
+<sub><sup>**Updated Nov 27, 2018:** Updated credentials for new unifi versions (uses a new username)</sup></sub><br/>
 <sub><sup>**Updated Jul 31, 2016:** Moved away from letsencrypt-auto and switched to certbot, updated the auto-renewal script, and changed the suggested cron time to weekly. Also made mention that mFi series has been discontinued. Finally, fixed the install instructions for Unifi Video.</sup></sub><br/>
 
 <img src="/assets/goodcert.png" style="width: 542px;" /><br/>
@@ -35,12 +36,13 @@ Lets Encrypt is somewhat unusual in the way it works. Essentially yes, they give
 Go to AWS EC2 and create an instance. For Ubiquiti products, I've found that even one `t2.micro` machine can run all three of the servers we'll be deal with in this artice. If configured right, you might even be able to stay in the AWS [Free Tier](https://aws.amazon.com/free/)
 
 - Type: t2.micro
-- OS: Ubuntu Server 14.04 LTS
+- OS: Ubuntu Server 18.04 LTS
 - Storage: ~30GB (maybe more if you'll be doing a lot of video recording)
 - Ports to open: At least port 443 for the Lets Encrypt verification, but depending on the Ubiquiti service (all TCP unless otherwise specified):
 	- **mFi**: 6080, 6443
 	- **Unifi**: 8081, 8080, 8443, 8880, 8843, 3478 (UDP)
 	- **Unifi Video**: 6666, 7080, 7443, 7445, 7446, 7447
+- Remember to log into your server using `ssh ubuntu@IP-ADDRESS`
 
 <br/>
 
@@ -57,11 +59,8 @@ You'll need to add Ubiquiti's repositories so you can use `apt-get` to easily in
 
 -   **Unifi**:
 
-		# note that you can change stable to unifi5 for v5
-		echo 'deb http://www.ubnt.com/downloads/unifi/debian stable ubiquiti' | sudo tee -a /etc/apt/sources.list.d/100-ubnt.list
-		sudo apt-key adv --keyserver keyserver.ubuntu.com --recv C0A52C50
-		sudo apt-get update
-		sudo apt-get install unifi
+		# Unifi has been a pain to install, so people have created a script to install everything, see:
+		# https://community.ubnt.com/t5/UniFi-Wireless/UniFi-Installation-Scripts-UniFi-Easy-Update-Scripts-Ubuntu-18/td-p/2375150
 
 -   **Unifi Video**:
 
@@ -97,7 +96,7 @@ Select option 2 (to use a temporary webserver), then enter your email (so you ge
 
 The Ubiquiti services are Java-based and they use the [Java Keystore](https://www.digitalocean.com/community/tutorials/java-keytool-essentials-working-with-java-keystores) as a way of storing the private keys and certificates. We first need to generate a [PKCS #12](https://en.wikipedia.org/wiki/PKCS_12) certificate from the raw ones we just received:
 
-	sudo openssl pkcs12 -export -inkey /etc/letsencrypt/live/mysubdomain.mydomain.com/privkey.pem -in /etc/letsencrypt/live/mysubdomain.mydomain.com/fullchain.pem -out /home/ubuntu/cert.p12 -name ubnt -password pass:temppass
+	sudo openssl pkcs12 -export -inkey /etc/letsencrypt/live/mysubdomain.mydomain.com/privkey.pem -in /etc/letsencrypt/live/mysubdomain.mydomain.com/fullchain.pem -out /home/ubuntu/cert.p12 -name unifi -password pass:temppass
 
 Again, don't forget to replace `mysubdomain.mydomain.com` with your domain name. Everything else can remain as-is.
 
@@ -105,15 +104,15 @@ Now for each service you'll need to load the PKCS #12 certificate into its own k
 
 -	**mFi**:
 
-		sudo keytool -importkeystore -deststorepass aircontrolenterprise -destkeypass aircontrolenterprise -destkeystore /var/lib/mfi/keystore -srckeystore /home/ubuntu/cert.p12 -srcstoretype PKCS12 -srcstorepass temppass -alias ubnt -noprompt
+		sudo keytool -importkeystore -deststorepass aircontrolenterprise -destkeypass aircontrolenterprise -destkeystore /var/lib/mfi/keystore -srckeystore /home/ubuntu/cert.p12 -srcstoretype PKCS12 -srcstorepass temppass -alias unifi -noprompt
 
 -	**Unifi**:
 
-		sudo keytool -importkeystore -deststorepass aircontrolenterprise -destkeypass aircontrolenterprise -destkeystore /var/lib/unifi/keystore -srckeystore /home/ubuntu/cert.p12 -srcstoretype PKCS12 -srcstorepass temppass -alias ubnt -noprompt
+		sudo keytool -importkeystore -deststorepass aircontrolenterprise -destkeypass aircontrolenterprise -destkeystore /var/lib/unifi/keystore -srckeystore /home/ubuntu/cert.p12 -srcstoretype PKCS12 -srcstorepass temppass -alias unifi -noprompt
 
 -	**Unifi Video**:
 
-		sudo keytool -importkeystore -deststorepass ubiquiti -destkeypass ubiquiti -destkeystore /var/lib/unifi-video/keystore -srckeystore /home/ubuntu/cert.p12 -srcstoretype PKCS12 -srcstorepass temppass -alias ubnt -noprompt
+		sudo keytool -importkeystore -deststorepass ubiquiti -destkeypass ubiquiti -destkeystore /var/lib/unifi-video/keystore -srckeystore /home/ubuntu/cert.p12 -srcstoretype PKCS12 -srcstorepass temppass -alias unifi -noprompt
 
 Basically all that's different is the keystore location of the service, and the password Ubiquiti uses to protect it.
 
@@ -139,12 +138,12 @@ Create a new file `/home/ubuntu/renew_lets_encrypt_cert.sh` and customize it acc
 	/home/ubuntu/certbot-auto renew --quiet --no-self-upgrade
 
 	# Convert cert to PKCS #12 format
-	openssl pkcs12 -export -inkey /etc/letsencrypt/live/mysubdomain.mydomain.com/privkey.pem -in /etc/letsencrypt/live/mysubdomain.mydomain.com/fullchain.pem -out /home/ubuntu/cert.p12 -name ubnt -password pass:temppass
+	openssl pkcs12 -export -inkey /etc/letsencrypt/live/mysubdomain.mydomain.com/privkey.pem -in /etc/letsencrypt/live/mysubdomain.mydomain.com/fullchain.pem -out /home/ubuntu/cert.p12 -name unifi -password pass:temppass
 
 	# Load it into the java keystore that UBNT understands
-	keytool -importkeystore -deststorepass aircontrolenterprise -destkeypass aircontrolenterprise -destkeystore /var/lib/mfi/keystore -srckeystore /home/ubuntu/cert.p12 -srcstoretype PKCS12 -srcstorepass temppass -alias ubnt -noprompt
-	keytool -importkeystore -deststorepass aircontrolenterprise -destkeypass aircontrolenterprise -destkeystore /var/lib/unifi/keystore -srckeystore /home/ubuntu/cert.p12 -srcstoretype PKCS12 -srcstorepass temppass -alias ubnt -noprompt
-	keytool -importkeystore -deststorepass ubiquiti -destkeypass ubiquiti -destkeystore /var/lib/unifi-video/keystore -srckeystore /home/ubuntu/cert.p12 -srcstoretype PKCS12 -srcstorepass temppass -alias ubnt -noprompt
+	keytool -importkeystore -deststorepass aircontrolenterprise -destkeypass aircontrolenterprise -destkeystore /var/lib/mfi/keystore -srckeystore /home/ubuntu/cert.p12 -srcstoretype PKCS12 -srcstorepass temppass -alias unifi -noprompt
+	keytool -importkeystore -deststorepass aircontrolenterprise -destkeypass aircontrolenterprise -destkeystore /var/lib/unifi/keystore -srckeystore /home/ubuntu/cert.p12 -srcstoretype PKCS12 -srcstorepass temppass -alias unifi -noprompt
+	keytool -importkeystore -deststorepass ubiquiti -destkeypass ubiquiti -destkeystore /var/lib/unifi-video/keystore -srckeystore /home/ubuntu/cert.p12 -srcstoretype PKCS12 -srcstorepass temppass -alias unifi -noprompt
 
 	# Clean up and use new cert
 	rm /home/ubuntu/cert.p12
